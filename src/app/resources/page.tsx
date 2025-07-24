@@ -12,39 +12,39 @@ type Resource = {
 const resources: Resource[] = [
   {
     title: "Understanding Anxiety",
-    description: "Learn about the symptoms, causes, and treatments for anxiety in this comprehensive guide.",
+    description: "Learn about the symptoms, causes, and treatments for anxiety in this comprehensive guide from NIMH.",
     type: "Article",
-    link: "#",
+    link: "https://www.nimh.nih.gov/health/topics/anxiety-disorders",
   },
   {
     title: "Crisis Text Line",
     description: "In crisis? Text HOME to 741741 from anywhere in the US, anytime, about any type of crisis.",
     type: "Helpline",
-    link: "#",
+    link: "https://www.crisistextline.org/",
   },
   {
     title: "5-Minute Mindfulness Meditation",
     description: "A short, guided meditation to help you calm your mind and reduce stress.",
     type: "Exercise",
-    link: "#",
+    link: "https://www.youtube.com/watch?v=inpok4MKVLM",
   },
   {
     title: "The National Suicide Prevention Lifeline",
-    description: "Call 988 for 24/7, free and confidential support for people in distress.",
+    description: "Call or text 988 for 24/7, free and confidential support for people in distress.",
     type: "Helpline",
-    link: "#",
+    link: "https://988lifeline.org/",
   },
   {
     title: "Dealing with Burnout",
     description: "Tips and strategies for recognizing and overcoming academic and social burnout.",
     type: "Article",
-    link: "#",
+    link: "https://www.helpguide.org/articles/stress/burnout-prevention-and-recovery.htm",
   },
   {
     title: "Box Breathing Exercise",
     description: "A simple but powerful technique to calm your nervous system in just a few minutes.",
     type: "Exercise",
-    link: "#",
+    link: "https://www.youtube.com/watch?v=tEmt1Znux58",
   },
 ];
 
