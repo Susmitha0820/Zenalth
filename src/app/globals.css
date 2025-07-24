@@ -37,6 +37,14 @@
     --sidebar-accent-foreground: 240 5.9% 10%;
     --sidebar-border: 240 5.9% 90%;
     --sidebar-ring: 261 100% 77.3%;
+
+    /* Mood-based chat colors */
+    --chat-primary-joyful: hsl(var(--chart-5));
+    --chat-primary-happy: hsl(var(--chart-4));
+    --chat-primary-neutral: hsl(var(--chart-3));
+    --chat-primary-sad: hsl(var(--chart-2));
+    --chat-primary-annoyed: hsl(var(--chart-1));
+    --chat-primary-default: hsl(var(--primary));
   }
   .dark {
     --background: 240 10% 3.9%;
@@ -71,6 +79,14 @@
     --sidebar-accent-foreground: 0 0% 98%;
     --sidebar-border: 240 3.7% 15.9%;
     --sidebar-ring: 261 100% 77.3%;
+
+     /* Mood-based chat colors */
+    --chat-primary-joyful: hsl(var(--chart-5));
+    --chat-primary-happy: hsl(var(--chart-4));
+    --chat-primary-neutral: hsl(var(--chart-3));
+    --chat-primary-sad: hsl(var(--chart-2));
+    --chat-primary-annoyed: hsl(var(--chart-1));
+    --chat-primary-default: hsl(var(--primary));
   }
 }
 

@@ -9,7 +9,6 @@ import {
   ChartContainer,
   ChartTooltip,
   ChartTooltipContent,
-  ChartConfig,
 } from "@/components/ui/chart";
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, ResponsiveContainer } from "recharts";
 import { format, subDays, startOfDay, isSameDay } from "date-fns";
@@ -70,9 +69,14 @@ export default function MoodTrackerPage() {
 
     const newEntry: MoodEntry = { date: startOfDay(new Date()).toISOString(), mood };
     const updatedLog = [...moodLog, newEntry];
+    
+    // Update state
     setMoodLog(updatedLog);
     setHasLoggedToday(true);
+
+    // Update localStorage
     localStorage.setItem("moodLog", JSON.stringify(updatedLog));
+    localStorage.setItem("currentMood", mood);
   };
 
   const chartData = useMemo(() => {

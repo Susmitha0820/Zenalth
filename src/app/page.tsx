@@ -19,15 +19,31 @@ type ChatMessage = {
   suggestedAction?: string;
 };
 
+type Mood = "joyful" | "happy" | "neutral" | "sad" | "annoyed" | "default";
+
 export default function Home() {
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [input, setInput] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const scrollAreaRef = useRef<HTMLDivElement>(null);
   const [isClient, setIsClient] = useState(false);
+  const [currentMood, setCurrentMood] = useState<Mood>("default");
 
   useEffect(() => {
     setIsClient(true);
+    const mood = (localStorage.getItem("currentMood") as Mood) || "default";
+    setCurrentMood(mood);
+
+    const handleStorageChange = () => {
+        const mood = (localStorage.getItem("currentMood") as Mood) || "default";
+        setCurrentMood(mood);
+    }
+    
+    window.addEventListener('storage', handleStorageChange);
+
+    return () => {
+        window.removeEventListener('storage', handleStorageChange);
+    }
   }, []);
 
   useEffect(() => {
@@ -82,8 +98,10 @@ export default function Home() {
   };
   
   if (!isClient) {
-    return null;
+    return <div className="absolute top-4 right-4 flex gap-2 items-center h-7 w-7" />;
   }
+  
+  const chatPrimaryColor = `var(--chat-primary-${currentMood})`;
 
   return (
     <div className="flex flex-col h-screen p-4 md:p-6 bg-muted/20">
@@ -107,7 +125,10 @@ export default function Home() {
               <div key={index}>
                 {message.role === 'user' && (
                   <div className="flex items-start gap-3 justify-end">
-                    <div className="bg-primary text-primary-foreground p-3 rounded-lg max-w-sm">
+                    <div 
+                      className="text-primary-foreground p-3 rounded-lg max-w-sm"
+                      style={{ backgroundColor: chatPrimaryColor }}
+                    >
                       <p>{message.content}</p>
                     </div>
                     <Avatar className="w-8 h-8">
@@ -130,7 +151,7 @@ export default function Home() {
                         <CardHeader className="flex flex-row items-center gap-3 space-y-0 p-4">
                             <AlertTriangle className="text-destructive w-6 h-6"/>
                             <div>
-                                <CardTitle className="text-destructive text-base">A Note of Care</CardTitle>
+                                <CardTitle>A Note of Care</CardTitle>
                                 <CardDescription className="text-destructive/80 text-xs">
                                     It sounds like you're going through a lot.
                                 </CardDescription>
