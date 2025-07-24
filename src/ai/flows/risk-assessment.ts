@@ -4,6 +4,7 @@
 
 import {ai} from '@/ai/genkit';
 import {z} from 'genkit';
+import {detectEmotion} from './emotion-detection';
 
 const RiskAssessmentInputSchema = z.object({
   userInput: z.string().describe('The user input to analyze.'),
@@ -17,8 +18,12 @@ const RiskAssessmentOutputSchema = z.object({
   suggestedAction: z
     .string()
     .describe(
-      'Suggested coping mechanisms or direction to professional help based on the risk analysis.'
+      'Suggested coping mechanisms or direction to professional help based on the risk analysis and detected emotion.'
     ),
+  emotion: z
+    .string()
+    .optional()
+    .describe('The primary emotion detected in the user input.'),
 });
 
 export type RiskAssessmentOutput = z.infer<typeof RiskAssessmentOutputSchema>;
@@ -29,16 +34,26 @@ export async function assessRisk(input: RiskAssessmentInput): Promise<RiskAssess
 
 const riskAssessmentPrompt = ai.definePrompt({
   name: 'riskAssessmentPrompt',
-  input: {schema: RiskAssessmentInputSchema},
+  input: {
+    schema: z.object({
+      userInput: RiskAssessmentInputSchema.shape.userInput,
+      emotion: z
+        .string()
+        .optional()
+        .describe('The primary emotion detected in the user input.'),
+    }),
+  },
   output: {schema: RiskAssessmentOutputSchema},
   prompt: `You are a mental health expert analyzing user input for potential risks.
 
   Analyze the following user input:
   {{userInput}}
 
-  Determine if there are any emotional or mental health risks present. Provide a summary of the risks detected and suggest appropriate coping mechanisms or direct the user to professional help if needed. Return the output in JSON format.
+  The user's primary detected emotion is: {{emotion}}.
 
-  Make sure that if the user is suicidal, that you suggest they seek professional help.
+  Determine if there are any emotional or mental health risks present. Provide a summary of the risks detected and suggest appropriate coping mechanisms or direct the user to professional help if needed. The suggestions should be tailored to the detected emotion. For example, if the emotion is anger, suggest calming exercises. If sadness, suggest activities that can provide comfort. Return the output in JSON format.
+
+  Make sure that if the user is suicidal, that you suggest they seek professional help immediately by calling a hotline like 988.
   `,
 });
 
@@ -49,7 +64,17 @@ const riskAssessmentFlow = ai.defineFlow(
     outputSchema: RiskAssessmentOutputSchema,
   },
   async input => {
-    const {output} = await riskAssessmentPrompt(input);
-    return output!;
+    // First, detect the emotion from the user's input.
+    const emotionResult = await detectEmotion(input);
+    const emotion = emotionResult.emotion;
+
+    // Then, run the risk assessment prompt with the input and the detected emotion.
+    const {output} = await riskAssessmentPrompt({
+      userInput: input.userInput,
+      emotion,
+    });
+
+    // Return the final assessment, including the detected emotion.
+    return {...output!, emotion};
   }
 );
