@@ -1,5 +1,5 @@
 import { config } from 'dotenv';
-config();
+config({ path: '.env' });
 
 import '@/ai/flows/empathetic-response.ts';
 import '@/ai/flows/risk-assessment.ts';
