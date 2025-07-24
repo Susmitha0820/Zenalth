@@ -6,7 +6,7 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/com
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { analyzeJournalEntry, JournalAnalysisOutput } from "@/ai/flows/journal-analysis";
-import { Loader, Wand2, BookText, Smile, Frown, Meh, Sparkles, Lightbulb, MessageCircleQuestion } from "lucide-react";
+import { Loader, Wand2, BookText, Smile, Frown, Meh, Sparkles, Lightbulb, MessageCircleQuestion, ShieldCheck } from "lucide-react";
 import { Separator } from "@/components/ui/separator";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
@@ -62,7 +62,7 @@ export default function JournalPage() {
           <CardHeader>
             <CardTitle>Your Space to Reflect</CardTitle>
             <CardDescription>
-              Write whatever is on your mind. Your entry is private.
+              Write whatever is on your mind.
             </CardDescription>
           </CardHeader>
           <CardContent className="flex flex-col gap-4">
@@ -73,6 +73,13 @@ export default function JournalPage() {
               rows={15}
               className="resize-none"
             />
+            <Alert variant="default" className="text-sm">
+                <ShieldCheck className="h-4 w-4" />
+                <AlertTitle>Privacy First</AlertTitle>
+                <AlertDescription>
+                   Your journal entries are processed for analysis but are never stored. Your privacy is protected.
+                </AlertDescription>
+            </Alert>
             <Button onClick={handleAnalyze} disabled={isLoading} className="w-full">
               {isLoading ? (
                 <>

@@ -12,6 +12,8 @@ import { detectEmotion } from "@/ai/flows/emotion-detection";
 import { Send, AlertTriangle, ShieldCheck, User, Bot } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
+import { Alert, AlertTitle, AlertDescription } from "@/components/ui/alert";
+
 
 type ChatMessage = {
   role: "user" | "assistant" | "risk-assessment";
@@ -224,9 +226,12 @@ export default function Home() {
             <Send />
           </Button>
         </form>
-        <p className="text-xs text-muted-foreground mt-2 flex items-center gap-1">
-            <ShieldCheck size={12}/> Your conversation is private and not stored.
-        </p>
+         <Alert variant="default" className="text-xs mt-2 py-2 px-3">
+            <ShieldCheck className="h-4 w-4" />
+            <AlertDescription>
+                Your conversation is private. Messages are processed by the AI but never stored.
+            </AlertDescription>
+        </Alert>
       </footer>
     </div>
   );
