@@ -7,9 +7,9 @@ import Link from "next/link";
 import {
   Heart,
   MessageSquare,
-  BookOpen,
-  BarChart2,
-  PenSquare,
+  Smile,
+  BookUser,
+  LifeBuoy,
 } from "lucide-react";
 
 import {
@@ -71,7 +71,7 @@ function AppShellContent({ children }: { children: React.ReactNode }) {
                         tooltip={{ children: "Mood Tracker" }}
                       >
                         <Link href="/mood-tracker">
-                          <BarChart2 />
+                          <Smile />
                           <span>Mood Tracker</span>
                         </Link>
                       </SidebarMenuButton>
@@ -83,7 +83,7 @@ function AppShellContent({ children }: { children: React.ReactNode }) {
                         tooltip={{ children: "Journal" }}
                       >
                         <Link href="/journal">
-                          <PenSquare />
+                          <BookUser />
                           <span>Journal</span>
                         </Link>
                       </SidebarMenuButton>
@@ -95,7 +95,7 @@ function AppShellContent({ children }: { children: React.ReactNode }) {
                         tooltip={{ children: "Resources" }}
                       >
                         <Link href="/resources">
-                          <BookOpen />
+                          <LifeBuoy />
                           <span>Resources</span>
                         </Link>
                       </SidebarMenuButton>
