@@ -129,6 +129,12 @@ export default function SettingsPage() {
                   <SelectItem value="Hindi">Hindi (हिन्दी)</SelectItem>
                   <SelectItem value="Telugu">Telugu (తెలుగు)</SelectItem>
                   <SelectItem value="Marathi">Marathi (मराठी)</SelectItem>
+                  <SelectItem value="Tamil">Tamil (தமிழ்)</SelectItem>
+                  <SelectItem value="Bengali">Bengali (বাংলা)</SelectItem>
+                  <SelectItem value="Gujarati">Gujarati (ગુજરાતી)</SelectItem>
+                  <SelectItem value="Kannada">Kannada (ಕನ್ನಡ)</SelectItem>
+                  <SelectItem value="Malayalam">Malayalam (മലയാളം)</SelectItem>
+                  <SelectItem value="Punjabi">Punjabi (ਪੰਜਾਬੀ)</SelectItem>
                 </SelectContent>
               </Select>
           </CardContent>
