@@ -1,3 +1,4 @@
+
 "use client";
 
 import { useState, useEffect, useMemo } from "react";
@@ -50,12 +51,14 @@ export default function MoodTrackerPage() {
     setIsClient(true);
     try {
         const savedLog = localStorage.getItem("moodLog");
-        const parsedLog: MoodEntry[] = savedLog ? JSON.parse(savedLog) : [];
-        setMoodLog(parsedLog);
-    
-        const today = startOfDay(new Date());
-        const loggedToday = parsedLog.some(entry => isSameDay(new Date(entry.date), today));
-        setHasLoggedToday(loggedToday);
+        if (savedLog) {
+          const parsedLog: MoodEntry[] = JSON.parse(savedLog);
+          setMoodLog(parsedLog);
+
+          const today = startOfDay(new Date());
+          const loggedToday = parsedLog.some(entry => isSameDay(new Date(entry.date), today));
+          setHasLoggedToday(loggedToday);
+        }
     } catch(error) {
         console.error("Failed to parse mood log from localStorage", error);
         setMoodLog([]);
