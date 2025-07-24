@@ -51,7 +51,7 @@ export default function JournalPage() {
   return (
     <div className="p-4 md:p-6">
       <header className="mb-6">
-        <h1 className="text-3xl font-bold font-headline">AI Journal</h1>
+        <h1 className="text-3xl font-bold">AI Journal</h1>
         <p className="text-muted-foreground mt-1">
           Write down your thoughts and let an AI help you find clarity.
         </p>
