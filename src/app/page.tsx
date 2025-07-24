@@ -87,9 +87,14 @@ export default function Home() {
         }
     } catch (error) {
         console.error("Error fetching AI response:", error);
+        let errorMessageContent = "I'm having a little trouble connecting right now. Please try again in a moment.";
+        if (error instanceof Error && error.message.includes('503')) {
+            errorMessageContent = "I'm a bit overwhelmed at the moment. Please try sending your message again in a few seconds.";
+        }
+        
         const errorMessage: ChatMessage = {
             role: "assistant",
-            content: "I'm having a little trouble connecting right now. Please try again in a moment.",
+            content: errorMessageContent,
         };
         setMessages((prev) => [...prev, errorMessage]);
     } finally {
