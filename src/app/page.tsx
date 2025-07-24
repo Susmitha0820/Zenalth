@@ -1,3 +1,4 @@
+
 "use client";
 
 import { useState, useRef, useEffect } from "react";
@@ -23,6 +24,11 @@ export default function Home() {
   const [input, setInput] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const scrollAreaRef = useRef<HTMLDivElement>(null);
+  const [isClient, setIsClient] = useState(false);
+
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
 
   useEffect(() => {
     if (scrollAreaRef.current) {
@@ -74,6 +80,10 @@ export default function Home() {
         setIsLoading(false);
     }
   };
+  
+  if (!isClient) {
+    return null;
+  }
 
   return (
     <div className="flex flex-col h-screen p-4 md:p-6 bg-muted/20">

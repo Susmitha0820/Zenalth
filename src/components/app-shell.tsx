@@ -1,3 +1,4 @@
+
 "use client";
 
 import * as React from "react";
@@ -27,7 +28,6 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
 function AppShellContent({ children }: { children: React.ReactNode }) {
     const pathname = usePathname();
-    const { isMobile } = useSidebar();
     const [isClient, setIsClient] = React.useState(false);
 
     React.useEffect(() => {
@@ -103,11 +103,11 @@ function AppShellContent({ children }: { children: React.ReactNode }) {
                 </SidebarFooter>
             </Sidebar>
             <SidebarInset>
-                {isClient && (
+                {isClient ? (
                     <div className="absolute top-4 right-4 flex gap-2 items-center">
                         <SidebarTrigger />
                     </div>
-                )}
+                ) : <div className="absolute top-4 right-4 flex gap-2 items-center h-7 w-7" /> }
                 {children}
             </SidebarInset>
         </>
