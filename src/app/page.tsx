@@ -8,6 +8,7 @@ import { Input } from "@/components/ui/input";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { empatheticResponse } from "@/ai/flows/empathetic-response";
 import { assessRisk } from "@/ai/flows/risk-assessment";
+import { detectEmotion } from "@/ai/flows/emotion-detection";
 import { Send, AlertTriangle, ShieldCheck, User, Bot } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
@@ -21,6 +22,18 @@ type ChatMessage = {
 
 type Mood = "joyful" | "happy" | "neutral" | "sad" | "annoyed" | "default";
 
+// Mapping from detected emotion to mood for theming
+const emotionToMoodMap: { [key: string]: Mood } = {
+    joy: 'joyful',
+    surprise: 'happy',
+    neutral: 'neutral',
+    sadness: 'sad',
+    fear: 'sad',
+    anger: 'annoyed',
+    disgust: 'annoyed',
+};
+
+
 export default function Home() {
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [input, setInput] = useState("");
@@ -32,16 +45,14 @@ export default function Home() {
 
   useEffect(() => {
     setIsClient(true);
+    // Load initial mood from mood tracker, but it will be updated by chat
     const mood = (localStorage.getItem("currentMood") as Mood) || "default";
     setCurrentMood(mood);
     const savedLanguage = localStorage.getItem("chatLanguage") || "English";
     setLanguage(savedLanguage);
 
     const handleStorageChange = (event: StorageEvent) => {
-        if (event.key === "currentMood") {
-            const mood = (localStorage.getItem("currentMood") as Mood) || "default";
-            setCurrentMood(mood);
-        }
+        // We only listen for language changes now
         if (event.key === "chatLanguage") {
             const savedLanguage = localStorage.getItem("chatLanguage") || "English";
             setLanguage(savedLanguage);
@@ -70,14 +81,19 @@ export default function Home() {
 
     const userMessage: ChatMessage = { role: "user", content: input };
     setMessages((prev) => [...prev, userMessage]);
+    const currentInput = input;
     setInput("");
     setIsLoading(true);
 
     try {
-        const [response, risk] = await Promise.all([
-            empatheticResponse({ userInput: input, language }),
-            assessRisk({ userInput: input }),
+        const [response, risk, emotionResult] = await Promise.all([
+            empatheticResponse({ userInput: currentInput, language }),
+            assessRisk({ userInput: currentInput }),
+            detectEmotion({ userInput: currentInput }),
         ]);
+        
+        const detectedMood = emotionToMoodMap[emotionResult.emotion] || 'default';
+        setCurrentMood(detectedMood);
 
         const assistantMessage: ChatMessage = {
             role: "assistant",
