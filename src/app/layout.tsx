@@ -5,8 +5,8 @@ import { Toaster } from "@/components/ui/toaster";
 import { ThemeProvider } from '@/components/theme-provider';
 
 export const metadata: Metadata = {
-  title: 'GenZ Friend',
-  description: 'A supportive space for Gen Z.',
+  title: 'Zenalth',
+  description: 'A supportive space for your mental wellness.',
 };
 
 export default function RootLayout({

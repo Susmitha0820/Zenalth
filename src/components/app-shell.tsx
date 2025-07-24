@@ -46,7 +46,7 @@ function AppShellContent({ children }: { children: React.ReactNode }) {
                     </div>
                     <div className="flex flex-col">
                         <h2 className="text-lg font-semibold tracking-tight">
-                          GenZ Friend
+                          Zenalth
                         </h2>
                     </div>
                   </div>
