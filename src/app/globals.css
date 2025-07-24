@@ -4,20 +4,20 @@
 
 @layer base {
   :root {
-    --background: 0 0% 98%; /* #FAFAFA */
-    --foreground: 240 10% 3.9%;
+    --background: 0 0% 100%;
+    --foreground: 240 5% 35%; /* Softer black */
     --card: 0 0% 100%;
-    --card-foreground: 240 10% 3.9%;
+    --card-foreground: 240 5% 35%;
     --popover: 0 0% 100%;
-    --popover-foreground: 240 10% 3.9%;
+    --popover-foreground: 240 5% 35%;
     --primary: 215 80% 85%; /* Soft Blue */
-    --primary-foreground: 215 25% 25%;
+    --primary-foreground: 215 30% 30%;
     --secondary: 240 4.8% 95.9%;
     --secondary-foreground: 240 5.9% 10%;
     --muted: 240 4.8% 95.9%;
     --muted-foreground: 240 3.8% 46.1%;
     --accent: 150 45% 90%; /* Soft Mint */
-    --accent-foreground: 150 30% 25%;
+    --accent-foreground: 150 30% 30%;
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 0 0% 98%;
     --border: 240 5.9% 90%;
@@ -30,7 +30,7 @@
     --chart-5: 280 70% 92%; /* Soft Lavender */
     --radius: 0.5rem;
     --sidebar-background: 0 0% 100%;
-    --sidebar-foreground: 240 10% 3.9%;
+    --sidebar-foreground: 240 5% 35%;
     --sidebar-primary: 215 80% 85%;
     --sidebar-primary-foreground: 215 25% 25%;
     --sidebar-accent: 0 0% 96.1%;
@@ -47,38 +47,38 @@
     --chat-primary-default: hsl(var(--primary));
   }
   .dark {
-    --background: 240 10% 3.9%;
-    --foreground: 0 0% 98%;
-    --card: 240 10% 3.9%;
-    --card-foreground: 0 0% 98%;
-    --popover: 240 10% 3.9%;
-    --popover-foreground: 0 0% 98%;
-    --primary: 215 60% 55%;
-    --primary-foreground: 0 0% 98%;
+    --background: 240 10% 8%; /* Darker background */
+    --foreground: 0 0% 80%; /* Lighter foreground */
+    --card: 240 10% 8%;
+    --card-foreground: 0 0% 80%;
+    --popover: 240 10% 8%;
+    --popover-foreground: 0 0% 80%;
+    --primary: 215 60% 25%; /* Muted dark blue */
+    --primary-foreground: 0 0% 90%;
     --secondary: 240 3.7% 15.9%;
     --secondary-foreground: 0 0% 98%;
     --muted: 240 3.7% 15.9%;
     --muted-foreground: 240 5% 64.9%;
-    --accent: 150 40% 45%;
-    --accent-foreground: 0 0% 98%;
+    --accent: 150 40% 25%; /* Muted dark mint */
+    --accent-foreground: 0 0% 90%;
     --destructive: 0 62.8% 30.6%;
     --destructive-foreground: 0 0% 98%;
-    --border: 240 3.7% 15.9%;
-    --input: 240 3.7% 15.9%;
-    --ring: 215 60% 45%;
-    --chart-1: 0 50% 50%;
-    --chart-2: 60 50% 50%;
-    --chart-3: 120 30% 50%;
-    --chart-4: 190 40% 50%;
-    --chart-5: 280 50% 55%;
-    --sidebar-background: 240 10% 3.9%;
-    --sidebar-foreground: 0 0% 98%;
-    --sidebar-primary: 215 60% 55%;
-    --sidebar-primary-foreground: 0 0% 98%;
+    --border: 240 3.7% 20%;
+    --input: 240 3.7% 20%;
+    --ring: 215 60% 35%;
+    --chart-1: 0 50% 30%;
+    --chart-2: 60 50% 30%;
+    --chart-3: 120 30% 30%;
+    --chart-4: 190 40% 30%;
+    --chart-5: 280 50% 35%;
+    --sidebar-background: 240 10% 8%;
+    --sidebar-foreground: 0 0% 80%;
+    --sidebar-primary: 215 60% 25%;
+    --sidebar-primary-foreground: 0 0% 90%;
     --sidebar-accent: 240 3.7% 15.9%;
     --sidebar-accent-foreground: 0 0% 98%;
-    --sidebar-border: 240 3.7% 15.9%;
-    --sidebar-ring: 215 60% 45%;
+    --sidebar-border: 240 3.7% 20%;
+    --sidebar-ring: 215 60% 35%;
 
      /* Mood-based chat colors */
     --chat-primary-joyful: hsl(var(--chart-5));
