@@ -1,14 +1,35 @@
 
 "use client";
 
+import { useEffect, useState } from "react";
 import { useTheme } from "next-themes";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Label } from "@/components/ui/label";
-import { Moon, Sun, Palette } from "lucide-react";
+import { Moon, Sun, Palette, Languages } from "lucide-react";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
 export default function SettingsPage() {
   const { theme, setTheme, systemTheme } = useTheme();
+  const [language, setLanguage] = useState("English");
+  const [isClient, setIsClient] = useState(false);
+
+  useEffect(() => {
+    setIsClient(true);
+    const savedLanguage = localStorage.getItem("chatLanguage") || "English";
+    setLanguage(savedLanguage);
+  }, []);
+
+  const handleLanguageChange = (newLanguage: string) => {
+    setLanguage(newLanguage);
+    localStorage.setItem("chatLanguage", newLanguage);
+  };
 
   // The actual theme value, considering system preference for the 'system' option
   const currentTheme = theme === "system" ? systemTheme : theme;
@@ -37,13 +58,16 @@ export default function SettingsPage() {
     }
   };
 
+  if (!isClient) {
+    return null; // or a loading skeleton
+  }
 
   return (
     <div className="p-4 md:p-6">
       <header className="mb-6">
         <h1 className="text-3xl font-bold font-headline">Settings</h1>
         <p className="text-muted-foreground mt-1">
-          Customize the look and feel of your app.
+          Customize the look, feel, and language of your app.
         </p>
       </header>
 
@@ -85,6 +109,28 @@ export default function SettingsPage() {
                     {currentTheme?.endsWith('-dark') ? <Sun size={20} /> : <Moon size={20} />}
                 </button>
             </div>
+          </CardContent>
+        </Card>
+
+        <Card>
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2"><Languages size={22} /> Language</CardTitle>
+            <CardDescription>
+              Choose the language for your conversations with the AI.
+            </CardDescription>
+          </CardHeader>
+          <CardContent>
+             <Select value={language} onValueChange={handleLanguageChange}>
+                <SelectTrigger className="w-full">
+                  <SelectValue placeholder="Select a language" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="English">English</SelectItem>
+                  <SelectItem value="Hindi">Hindi (हिन्दी)</SelectItem>
+                  <SelectItem value="Telugu">Telugu (తెలుగు)</SelectItem>
+                  <SelectItem value="Marathi">Marathi (मराठी)</SelectItem>
+                </SelectContent>
+              </Select>
           </CardContent>
         </Card>
       </div>

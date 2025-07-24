@@ -28,15 +28,24 @@ export default function Home() {
   const scrollAreaRef = useRef<HTMLDivElement>(null);
   const [isClient, setIsClient] = useState(false);
   const [currentMood, setCurrentMood] = useState<Mood>("default");
+  const [language, setLanguage] = useState("English");
 
   useEffect(() => {
     setIsClient(true);
     const mood = (localStorage.getItem("currentMood") as Mood) || "default";
     setCurrentMood(mood);
+    const savedLanguage = localStorage.getItem("chatLanguage") || "English";
+    setLanguage(savedLanguage);
 
-    const handleStorageChange = () => {
-        const mood = (localStorage.getItem("currentMood") as Mood) || "default";
-        setCurrentMood(mood);
+    const handleStorageChange = (event: StorageEvent) => {
+        if (event.key === "currentMood") {
+            const mood = (localStorage.getItem("currentMood") as Mood) || "default";
+            setCurrentMood(mood);
+        }
+        if (event.key === "chatLanguage") {
+            const savedLanguage = localStorage.getItem("chatLanguage") || "English";
+            setLanguage(savedLanguage);
+        }
     }
     
     window.addEventListener('storage', handleStorageChange);
@@ -66,7 +75,7 @@ export default function Home() {
 
     try {
         const [response, risk] = await Promise.all([
-            empatheticResponse({ userInput: input }),
+            empatheticResponse({ userInput: input, language }),
             assessRisk({ userInput: input }),
         ]);
 
