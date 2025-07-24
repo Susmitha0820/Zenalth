@@ -10,6 +10,7 @@ import {
   Smile,
   BookUser,
   LifeBuoy,
+  Settings,
 } from "lucide-react";
 
 import {
@@ -103,6 +104,20 @@ function AppShellContent({ children }: { children: React.ReactNode }) {
                   </SidebarMenu>
                 </SidebarContent>
                 <SidebarFooter>
+                    <SidebarMenu>
+                      <SidebarMenuItem>
+                         <SidebarMenuButton
+                            asChild
+                            isActive={pathname === "/settings"}
+                            tooltip={{ children: "Settings" }}
+                          >
+                            <Link href="/settings">
+                              <Settings />
+                              <span>Settings</span>
+                            </Link>
+                          </SidebarMenuButton>
+                      </SidebarMenuItem>
+                    </SidebarMenu>
                    <div className="flex items-center gap-3">
                     <Avatar className="h-10 w-10">
                         <AvatarImage src="https://placehold.co/40x40.png" alt="User Avatar" data-ai-hint="avatar abstract" />
