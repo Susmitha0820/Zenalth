@@ -9,6 +9,7 @@ import {
   MessageSquare,
   BookOpen,
   BarChart2,
+  PenSquare,
 } from "lucide-react";
 
 import {
@@ -72,6 +73,18 @@ function AppShellContent({ children }: { children: React.ReactNode }) {
                         <Link href="/mood-tracker">
                           <BarChart2 />
                           <span>Mood Tracker</span>
+                        </Link>
+                      </SidebarMenuButton>
+                    </SidebarMenuItem>
+                    <SidebarMenuItem>
+                      <SidebarMenuButton
+                        asChild
+                        isActive={pathname === "/journal"}
+                        tooltip={{ children: "Journal" }}
+                      >
+                        <Link href="/journal">
+                          <PenSquare />
+                          <span>Journal</span>
                         </Link>
                       </SidebarMenuButton>
                     </SidebarMenuItem>
