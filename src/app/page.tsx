@@ -115,10 +115,8 @@ export default function Home() {
     return <div className="absolute top-4 right-4 flex gap-2 items-center h-7 w-7" />;
   }
   
-  const chatPrimaryColor = `var(--chat-primary-${currentMood})`;
-
   return (
-    <div className="flex flex-col h-screen p-4 md:p-6 bg-muted/20">
+    <div className="flex flex-col h-screen p-4 md:p-6 bg-muted/20" data-mood={currentMood}>
       <header className="mb-4">
         <h1 className="text-2xl font-bold font-headline">Empathetic Chat</h1>
         <p className="text-muted-foreground">
@@ -140,8 +138,7 @@ export default function Home() {
                 {message.role === 'user' && (
                   <div className="flex items-start gap-3 justify-end">
                     <div 
-                      className="text-primary-foreground p-3 rounded-lg max-w-sm"
-                      style={{ backgroundColor: chatPrimaryColor }}
+                      className="bg-[--chat-primary] text-primary-foreground p-3 rounded-lg max-w-sm"
                     >
                       <p>{message.content}</p>
                     </div>
