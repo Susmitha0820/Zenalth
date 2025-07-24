@@ -4,7 +4,7 @@
 
 @layer base {
   :root {
-    --background: 0 0% 100%;
+    --background: 40 50% 98%;
     --foreground: 240 5% 35%; /* Softer black */
     --card: 0 0% 100%;
     --card-foreground: 240 5% 35%;
@@ -47,7 +47,7 @@
     --chat-primary-default: hsl(var(--primary));
   }
   .dark {
-    --background: 240 10% 8%; /* Darker background */
+    --background: 240 10% 10%; /* Softer dark background */
     --foreground: 0 0% 80%; /* Lighter foreground */
     --card: 240 10% 8%;
     --card-foreground: 0 0% 80%;
