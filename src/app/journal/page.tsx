@@ -6,9 +6,10 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/com
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { analyzeJournalEntry, JournalAnalysisOutput } from "@/ai/flows/journal-analysis";
-import { Loader, Wand2, Tag, BookText, Smile, Frown, Meh } from "lucide-react";
-import { Badge } from "@/components/ui/badge";
+import { Loader, Wand2, BookText, Smile, Frown, Meh, Sparkles, Lightbulb, MessageCircleQuestion } from "lucide-react";
 import { Separator } from "@/components/ui/separator";
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 
 export default function JournalPage() {
   const [entry, setEntry] = useState("");
@@ -53,7 +54,7 @@ export default function JournalPage() {
       <header className="mb-6">
         <h1 className="text-3xl font-bold">AI Journal</h1>
         <p className="text-muted-foreground mt-1">
-          Write down your thoughts and let an AI help you find clarity.
+          Write down your thoughts and let an AI help you find clarity and encouragement.
         </p>
       </header>
       <div className="grid gap-6 lg:grid-cols-2">
@@ -96,18 +97,35 @@ export default function JournalPage() {
           <CardContent>
             {analysis ? (
               <div className="space-y-6">
+                 {analysis.positiveStatement && (
+                    <Alert className="bg-primary/10 border-primary/30">
+                        <Sparkles className="h-4 w-4 text-primary" />
+                        <AlertTitle className="font-semibold text-primary/90">A Note of Encouragement</AlertTitle>
+                        <AlertDescription className="text-primary/80">
+                           {analysis.positiveStatement}
+                        </AlertDescription>
+                    </Alert>
+                 )}
                 <div>
                   <h3 className="font-semibold flex items-center gap-2 mb-2"><BookText size={18}/> Summary</h3>
                   <p className="text-sm text-muted-foreground bg-muted/50 p-3 rounded-md">{analysis.summary}</p>
                 </div>
                 <Separator />
                 <div>
-                    <h3 className="font-semibold flex items-center gap-2 mb-3"><Tag size={18}/> Key Themes</h3>
-                    <div className="flex flex-wrap gap-2">
-                        {analysis.themes.map((theme, i) => (
-                            <Badge key={i} variant="secondary">{theme}</Badge>
+                    <h3 className="font-semibold flex items-center gap-2 mb-3"><MessageCircleQuestion size={18}/> Key Themes & Suggestions</h3>
+                    <Accordion type="single" collapsible className="w-full">
+                        {analysis.themes.map((item, i) => (
+                           <AccordionItem value={`item-${i}`} key={i}>
+                             <AccordionTrigger className="text-sm font-medium">{item.theme}</AccordionTrigger>
+                             <AccordionContent className="text-sm text-muted-foreground space-y-2 pt-2">
+                                <div className="flex items-start gap-2 p-3 bg-muted/50 rounded-md">
+                                    <Lightbulb className="w-5 h-5 mt-0.5 text-accent-foreground shrink-0" />
+                                    <p>{item.solution}</p>
+                                </div>
+                             </AccordionContent>
+                           </AccordionItem>
                         ))}
-                    </div>
+                    </Accordion>
                 </div>
                  <Separator />
                  <div>
