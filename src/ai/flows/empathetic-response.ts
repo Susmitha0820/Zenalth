@@ -27,6 +27,12 @@ export type EmpatheticResponseInput = z.infer<
 
 const EmpatheticResponseOutputSchema = z.object({
   response: z.string().describe('The empathetic response to the user input.'),
+  highlightedTheme: z
+    .string()
+    .optional()
+    .describe(
+      'The single most prominent mental health keyword identified in the user input.'
+    ),
   recommendedResource: z
     .object({
       title: z.string(),
@@ -54,7 +60,14 @@ const prompt = ai.definePrompt({
   input: {schema: EmpatheticResponseInputSchema},
   output: {schema: EmpatheticResponseOutputSchema},
   tools: [getRelevantResources],
-  prompt: `You are an AI designed to provide empathetic and supportive responses to users. A user has provided the following input: "{{{userInput}}}".  Respond in a way that acknowledges their feelings and offers support or understanding. Be concise and avoid being overly verbose. Focus on making the user feel heard and understood. The response should be no more than 5 sentences.
+  prompt: `You are an AI designed to provide empathetic and supportive responses to users, with a focus on clarifying their feelings. A user has provided the following input: "{{{userInput}}}".
+
+Your primary goal is to identify the core mental health theme in their message from the following list: sleep issues, stress, isolation, emotional burnout, loneliness, depression, overthinking, hopelessness, anxiety, panic.
+
+1.  Analyze the user's input to determine the most prominent theme.
+2.  Formulate an empathetic response that acknowledges their feelings and gently highlights this key theme (e.g., "It sounds like you're dealing with a lot of stress right now."). This helps the user connect with and understand their emotion.
+3.  Populate the 'highlightedTheme' field with the single keyword you identified.
+4.  Be concise (no more than 5 sentences).
 
 If the user mentions a specific struggle like "anxiety", "stress", "loneliness", or asks for help, use the getRelevantResources tool to find a helpful article or exercise. If you find a relevant resource, incorporate it into your response and populate the 'recommendedResource' output field. Only recommend one resource at a time. Do not suggest helplines, only articles or exercises unless the user is in immediate distress.
 
@@ -74,7 +87,10 @@ const empatheticResponseFlow = ai.defineFlow(
     if (!output) {
       return {response: 'I am not sure how to respond to that.'};
     }
-    const toolCalls = llmResponse.toolCalls?.filter(tc => tc.tool === getRelevantResources.name) || [];
+    const toolCalls =
+      llmResponse.toolCalls?.filter(
+        tc => tc.tool === getRelevantResources.name
+      ) || [];
 
     if (toolCalls.length > 0) {
       const toolCall = toolCalls[0];
