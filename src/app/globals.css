@@ -6,11 +6,11 @@
   :root,
   [data-theme='default'] {
     --background: 240 10% 99%;
-    --foreground: 240 5% 35%;
+    --foreground: 240 10% 3.9%;
     --card: 0 0% 100%;
-    --card-foreground: 240 5% 35%;
+    --card-foreground: 240 10% 3.9%;
     --popover: 0 0% 100%;
-    --popover-foreground: 240 5% 35%;
+    --popover-foreground: 240 10% 3.9%;
     --primary: 215 80% 85%;
     --primary-foreground: 215 30% 30%;
     --secondary: 240 4.8% 95.9%;
@@ -35,11 +35,11 @@
   .dark,
   [data-theme='default-dark'] {
     --background: 240 10% 10%;
-    --foreground: 0 0% 80%;
+    --foreground: 0 0% 98%;
     --card: 240 10% 8%;
-    --card-foreground: 0 0% 80%;
+    --card-foreground: 0 0% 98%;
     --popover: 240 10% 8%;
-    --popover-foreground: 0 0% 80%;
+    --popover-foreground: 0 0% 98%;
     --primary: 215 60% 25%;
     --primary-foreground: 0 0% 90%;
     --secondary: 240 3.7% 15.9%;
