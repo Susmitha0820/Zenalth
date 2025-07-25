@@ -4,16 +4,17 @@
 import { useState, useEffect, useMemo, useCallback } from "react";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Calendar, Smile, Meh, Frown, Laugh, Annoyed, Flame, Award, Trophy, Sparkles } from "lucide-react";
+import { Calendar, Smile, Meh, Frown, Laugh, Annoyed, Flame, Award, Trophy, Sparkles, Loader, Wand2 } from "lucide-react";
 import {
   ChartContainer,
   ChartTooltip,
   ChartTooltipContent,
 } from "@/components/ui/chart";
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, ResponsiveContainer } from "recharts";
-import { format, subDays, startOfDay, isSameDay, differenceInCalendarDays } from "date-fns";
+import { format, subDays, startOfDay, isSameDay, differenceInCalendarDays, subHours } from "date-fns";
 import { Alert, AlertTitle, AlertDescription } from "@/components/ui/alert";
 import type { ChartConfig } from "@/components/ui/chart";
+import { moodQuote } from "@/ai/flows/mood-quote";
 
 type Mood = "joyful" | "happy" | "neutral" | "sad" | "annoyed";
 
@@ -34,7 +35,7 @@ const badgeMeta = {
 type BadgeTier = keyof typeof badgeMeta;
 
 type MoodEntry = {
-  date: string; // ISO string
+  date: string; // ISO string with timestamp
   mood: Mood;
 };
 
@@ -49,45 +50,43 @@ const chartConfig = {
   annoyed: { label: "Annoyed", color: moodMeta.annoyed.color },
 } satisfies ChartConfig;
 
-const positiveQuotes = [
-  "The secret of getting ahead is getting started.",
-  "Your attitude determines your direction.",
-  "Believe you can and you're halfway there.",
-  "The best way to predict the future is to create it.",
-  "A little progress each day adds up to big results."
-];
-
 export default function MoodTrackerPage() {
   const [moodLog, setMoodLog] = useState<MoodEntry[]>([]);
-  const [hasLoggedToday, setHasLoggedToday] = useState(false);
   const [streak, setStreak] = useState(0);
-  const [quote, setQuote] = useState("");
+  const [generatedQuote, setGeneratedQuote] = useState("");
   const [isClient, setIsClient] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   const calculateStreak = useCallback((log: MoodEntry[]) => {
     if (log.length === 0) return 0;
     
-    const sortedLog = [...log].sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
+    // Get unique days from the log, sorted reverse chronologically
+    const uniqueDays = [...new Set(log.map(entry => startOfDay(new Date(entry.date)).toISOString()))]
+      .sort((a,b) => new Date(b).getTime() - new Date(a).getTime())
+      .map(isoString => new Date(isoString));
+
+    if (uniqueDays.length === 0) return 0;
+
     let currentStreak = 0;
     const today = startOfDay(new Date());
-    const firstLogDate = startOfDay(new Date(sortedLog[0].date));
+    const firstLogDate = uniqueDays[0];
 
     // Check if the most recent log is today or yesterday to start the streak count
     if (isSameDay(firstLogDate, today) || differenceInCalendarDays(today, firstLogDate) === 1) {
       currentStreak = 1;
-      for (let i = 0; i < sortedLog.length - 1; i++) {
-        const currentDate = startOfDay(new Date(sortedLog[i].date));
-        const previousDate = startOfDay(new Date(sortedLog[i + 1].date));
+      for (let i = 0; i < uniqueDays.length - 1; i++) {
+        const currentDate = uniqueDays[i];
+        const previousDate = uniqueDays[i+1];
         if (differenceInCalendarDays(currentDate, previousDate) === 1) {
           currentStreak++;
-        } else if (!isSameDay(currentDate, previousDate)) {
-          // Break if dates are not consecutive and not the same day
-          break;
+        } else {
+          break; // Break if dates are not consecutive
         }
       }
     }
     return currentStreak;
   }, []);
+
 
   useEffect(() => {
     setIsClient(true);
@@ -95,54 +94,74 @@ export default function MoodTrackerPage() {
         const savedLog = localStorage.getItem("moodLog");
         const parsedLog: MoodEntry[] = savedLog ? JSON.parse(savedLog) : [];
         setMoodLog(parsedLog);
-
-        const today = startOfDay(new Date());
-        const loggedToday = parsedLog.some(entry => isSameDay(new Date(entry.date), today));
-        setHasLoggedToday(loggedToday);
-        
         setStreak(calculateStreak(parsedLog));
     } catch(error) {
         console.error("Failed to parse mood log from localStorage", error);
         setMoodLog([]);
     }
-    setQuote(positiveQuotes[Math.floor(Math.random() * positiveQuotes.length)]);
   }, [calculateStreak]);
 
-  const handleMoodSelect = (mood: Mood) => {
-    if (hasLoggedToday) return;
+  const handleMoodSelect = async (mood: Mood) => {
+    setIsLoading(true);
+    setGeneratedQuote("");
 
-    const newEntry: MoodEntry = { date: startOfDay(new Date()).toISOString(), mood };
-    // Remove any other entry for today before adding the new one
-    const logForOtherDays = moodLog.filter(entry => !isSameDay(new Date(entry.date), startOfDay(new Date())));
-    const updatedLog = [...logForOtherDays, newEntry];
+    const newEntry: MoodEntry = { date: new Date().toISOString(), mood };
+    const updatedLog = [...moodLog, newEntry];
     
     setMoodLog(updatedLog);
-    setHasLoggedToday(true);
     setStreak(calculateStreak(updatedLog));
     localStorage.setItem("moodLog", JSON.stringify(updatedLog));
     localStorage.setItem("currentMood", mood);
+    
+    try {
+      const result = await moodQuote({ mood });
+      setGeneratedQuote(result.quote);
+    } catch (e) {
+      console.error("Failed to get quote:", e);
+      setGeneratedQuote("Every step you take on your wellness journey is a victory.");
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   const chartData = useMemo(() => {
-    const last7Days = Array.from({ length: 7 }).map((_, i) => subDays(startOfDay(new Date()), i)).reverse();
-    return last7Days.map(date => {
-        const entry = moodLog.find(log => isSameDay(new Date(log.date), date));
-        const mood = entry?.mood;
-        const moodValue = mood ? moodMeta[mood].value : 0;
-        return {
-            date: format(date, "MMM d"),
-            moodValue,
-            fill: mood ? moodMeta[mood].color : "hsl(var(--muted))",
-        };
+    const last24Hours = Array.from({ length: 24 }).map((_, i) => subHours(new Date(), i)).reverse();
+    const hourlyMoods = last24Hours.map(hour => {
+      const entriesInHour = moodLog.filter(entry => 
+        new Date(entry.date) >= hour && new Date(entry.date) < subHours(hour, -1)
+      );
+      
+      let moodValue = 0;
+      let mood: Mood | undefined = undefined;
+
+      if (entriesInHour.length > 0) {
+        // Find the most frequent mood in the hour
+        const moodCounts = entriesInHour.reduce((acc, entry) => {
+          acc[entry.mood] = (acc[entry.mood] || 0) + 1;
+          return acc;
+        }, {} as Record<Mood, number>);
+        
+        mood = Object.keys(moodCounts).reduce((a, b) => moodCounts[a as Mood] > moodCounts[b as Mood] ? a : b) as Mood;
+        moodValue = mood ? moodMeta[mood].value : 0;
+      }
+      
+      return {
+        date: format(hour, "ha"),
+        moodValue,
+        fill: mood ? moodMeta[mood].color : "hsl(var(--muted))",
+      };
     });
+
+    return hourlyMoods;
   }, [moodLog]);
+
 
   const earnedBadges = useMemo(() => {
       return (Object.keys(badgeMeta) as unknown as BadgeTier[]).filter(tier => streak >= tier);
   }, [streak]);
 
   if (!isClient) {
-    return null; // or a loading skeleton
+    return null;
   }
 
   return (
@@ -150,7 +169,7 @@ export default function MoodTrackerPage() {
       <header className="mb-6">
         <h1 className="text-3xl font-bold font-headline">Mood Tracker</h1>
         <p className="text-muted-foreground mt-1">
-          Log your mood daily to see your emotional patterns over time.
+          Log your mood throughout the day to see your emotional patterns over time.
         </p>
       </header>
 
@@ -158,43 +177,44 @@ export default function MoodTrackerPage() {
         <div className="lg:col-span-1 flex flex-col gap-6">
             <Card className="flex flex-col">
               <CardHeader>
-                <CardTitle>How are you feeling today?</CardTitle>
-                <CardDescription>Select one to log your current mood.</CardDescription>
+                <CardTitle>How are you feeling right now?</CardTitle>
+                <CardDescription>Select a mood to log it.</CardDescription>
               </CardHeader>
-              <CardContent className="flex-grow flex flex-col justify-center">
-                {hasLoggedToday ? (
-                   <Alert>
-                     <Calendar className="h-4 w-4" />
-                     <AlertTitle>Thanks for logging!</AlertTitle>
-                     <AlertDescription>
-                       You've already logged your mood for today. Come back tomorrow!
-                     </AlertDescription>
-                   </Alert>
-                ) : (
-                    <div className="space-y-4">
-                        <div className="grid grid-cols-3 sm:grid-cols-5 gap-2 place-items-center">
-                            {Object.entries(moodMeta).map(([moodKey, { icon: Icon, label }]) => (
-                                <div key={moodKey} className="flex flex-col items-center gap-2">
-                                     <Button
-                                        variant="outline"
-                                        size="icon"
-                                        className="w-16 h-16 rounded-full"
-                                        onClick={() => handleMoodSelect(moodKey as Mood)}
-                                        aria-label={`Log mood as ${label}`}
-                                     >
-                                        <Icon className="w-8 h-8"/>
-                                     </Button>
-                                     <span className="text-sm text-muted-foreground">{label}</span>
-                                </div>
-                            ))}
+              <CardContent className="flex-grow flex flex-col justify-center gap-4">
+                  <div className="space-y-4">
+                      <div className="grid grid-cols-3 sm:grid-cols-5 gap-2 place-items-center">
+                          {Object.entries(moodMeta).map(([moodKey, { icon: Icon, label }]) => (
+                              <div key={moodKey} className="flex flex-col items-center gap-2">
+                                   <Button
+                                      variant="outline"
+                                      size="icon"
+                                      className="w-16 h-16 rounded-full"
+                                      onClick={() => handleMoodSelect(moodKey as Mood)}
+                                      disabled={isLoading}
+                                      aria-label={`Log mood as ${label}`}
+                                   >
+                                      <Icon className="w-8 h-8"/>
+                                   </Button>
+                                   <span className="text-sm text-muted-foreground">{label}</span>
+                              </div>
+                          ))}
+                      </div>
+                      {isLoading && (
+                        <div className="flex items-center justify-center text-sm text-muted-foreground gap-2">
+                           <Loader className="h-4 w-4 animate-spin"/>
+                           <span>Finding the right words...</span>
                         </div>
-                        <Alert variant="default" className="text-center bg-accent/30 border-accent/50">
+                      )}
+                      {generatedQuote && (
+                         <Alert variant="default" className="text-center bg-accent/30 border-accent/50">
+                            <Wand2 className="h-4 w-4"/>
+                            <AlertTitle>A Thought For You</AlertTitle>
                             <AlertDescription>
-                                "{quote}"
+                                "{generatedQuote}"
                             </AlertDescription>
                         </Alert>
-                    </div>
-                )}
+                      )}
+                  </div>
               </CardContent>
             </Card>
             <Card>
@@ -228,9 +248,9 @@ export default function MoodTrackerPage() {
         </div>
         <Card className="lg:col-span-2">
           <CardHeader>
-            <CardTitle>Your Mood: Last 7 Days</CardTitle>
+            <CardTitle>Your Mood: Last 24 Hours</CardTitle>
             <CardDescription>
-              A visualization of your mood entries.
+              A visualization of your mood entries. This is your daily assessment.
             </CardDescription>
           </CardHeader>
           <CardContent>
@@ -258,7 +278,7 @@ export default function MoodTrackerPage() {
                             cursor={false}
                             content={<ChartTooltipContent indicator="line" hideLabel />}
                         />
-                        <Bar dataKey="moodValue" radius={8}>
+                        <Bar dataKey="moodValue" radius={4}>
                            {chartData.map((entry, index) => (
                               <Bar key={`cell-${index}`} fill={entry.fill} />
                            ))}
@@ -272,5 +292,3 @@ export default function MoodTrackerPage() {
     </div>
   );
 }
-
-    
