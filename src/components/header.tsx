@@ -11,6 +11,7 @@ import {
   LifeBuoy,
   Settings,
   Menu,
+  Sparkles,
 } from "lucide-react";
 import {
   Sheet,
@@ -25,6 +26,7 @@ const navItems = [
   { href: "/", label: "Chat", icon: MessageSquare },
   { href: "/mood-tracker", label: "Mood Tracker", icon: Smile },
   { href: "/journal", label: "Journal", icon: BookUser },
+  { href: "/affirmations", label: "Affirmations", icon: Sparkles },
   { href: "/resources", label: "Resources", icon: LifeBuoy },
 ];
 
