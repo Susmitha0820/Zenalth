@@ -98,19 +98,30 @@ export function Header() {
 
         <div className="flex items-center gap-2">
            {authBypassed ? (
-             <TooltipProvider>
-                <Tooltip>
-                  <TooltipTrigger asChild>
-                    <div className="hidden md:flex items-center gap-1.5 text-sm text-muted-foreground font-semibold px-3">
-                      <ShieldOff className="h-4 w-4"/>
-                      <span>Demo Mode</span>
-                    </div>
-                  </TooltipTrigger>
-                  <TooltipContent>
-                    <p>Authentication is disabled. Set Firebase keys to enable user accounts.</p>
-                  </TooltipContent>
-                </Tooltip>
-              </TooltipProvider>
+             <div className="hidden md:flex items-center gap-2">
+                <TooltipProvider>
+                    <Tooltip>
+                    <TooltipTrigger asChild>
+                        <div className="flex items-center gap-1.5 text-sm text-muted-foreground font-semibold px-3">
+                        <ShieldOff className="h-4 w-4"/>
+                        <span>Demo Mode</span>
+                        </div>
+                    </TooltipTrigger>
+                    <TooltipContent>
+                        <p>Authentication is disabled. Set Firebase keys to enable user accounts.</p>
+                    </TooltipContent>
+                    </Tooltip>
+                </TooltipProvider>
+                 <Link href="/settings" className={cn(
+                    "flex items-center justify-center rounded-md h-9 w-9 transition-colors",
+                    pathname === "/settings"
+                      ? "bg-accent text-accent-foreground"
+                      : "text-muted-foreground hover:bg-accent/50 hover:text-accent-foreground"
+                  )}>
+                    <Settings className="h-5 w-5" />
+                    <span className="sr-only">Settings</span>
+                  </Link>
+             </div>
            ) : user ? (
             <>
               <Link href="/settings" className={cn(
@@ -163,12 +174,25 @@ export function Header() {
 
                 <div className="mt-auto p-4 border-t">
                   {authBypassed ? (
-                     <div className="flex items-center gap-2 text-muted-foreground p-3 rounded-md bg-muted text-sm">
-                        <ShieldOff className="h-5 w-5"/>
-                        <div>
-                          <p className="font-semibold">Demo Mode</p>
-                          <p className="text-xs">Authentication is disabled.</p>
+                     <div className="flex flex-col gap-2">
+                        <div className="flex items-center gap-2 text-muted-foreground p-3 rounded-md bg-muted text-sm">
+                            <ShieldOff className="h-5 w-5"/>
+                            <div>
+                            <p className="font-semibold">Demo Mode</p>
+                            <p className="text-xs">Authentication is disabled.</p>
+                            </div>
                         </div>
+                         <SheetClose asChild>
+                            <Link href="/settings" className={cn(
+                            "flex items-center gap-2 rounded-md px-3 py-2 text-base font-medium",
+                            pathname === "/settings"
+                                ? "bg-accent text-accent-foreground"
+                                : "text-muted-foreground hover:bg-accent/50 hover:text-accent-foreground"
+                            )}>
+                            <Settings className="h-5 w-5" />
+                            <span>Settings</span>
+                            </Link>
+                        </SheetClose>
                      </div>
                   ) : user ? (
                     <div className="flex flex-col gap-2">
