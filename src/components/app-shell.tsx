@@ -27,17 +27,19 @@ import {
   useSidebar,
 } from "@/components/ui/sidebar";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { useMood } from "@/hooks/use-mood";
 
 function AppShellContent({ children }: { children: React.ReactNode }) {
     const pathname = usePathname();
     const [isClient, setIsClient] = React.useState(false);
+    const { mood } = useMood();
 
     React.useEffect(() => {
         setIsClient(true);
     }, []);
 
     return (
-        <>
+        <div data-mood={mood}>
             <Sidebar>
                 <SidebarHeader>
                   <div className="flex items-center gap-2">
@@ -138,7 +140,7 @@ function AppShellContent({ children }: { children: React.ReactNode }) {
                 ) : <div className="absolute top-4 right-4 flex gap-2 items-center h-7 w-7" /> }
                 {children}
             </SidebarInset>
-        </>
+        </div>
     );
 }
 

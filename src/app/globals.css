@@ -6,29 +6,29 @@
   :root,
   [data-theme='default'] {
     --background: 240 10% 99%;
-    --foreground: 240 5% 35%; /* Softer black */
+    --foreground: 240 5% 35%;
     --card: 0 0% 100%;
     --card-foreground: 240 5% 35%;
     --popover: 0 0% 100%;
     --popover-foreground: 240 5% 35%;
-    --primary: 215 80% 85%; /* Soft Blue */
+    --primary: 215 80% 85%;
     --primary-foreground: 215 30% 30%;
     --secondary: 240 4.8% 95.9%;
     --secondary-foreground: 240 5.9% 10%;
     --muted: 240 4.8% 95.9%;
     --muted-foreground: 240 3.8% 46.1%;
-    --accent: 150 45% 90%; /* Soft Mint */
+    --accent: 150 45% 90%;
     --accent-foreground: 150 30% 30%;
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 0 0% 98%;
     --border: 240 5.9% 90%;
     --input: 240 5.9% 90%;
     --ring: 215 80% 75%;
-    --chart-1: 0 70% 90%; /* Soft Peach */
-    --chart-2: 60 70% 90%; /* Soft Yellow */
-    --chart-3: 120 40% 90%; /* Soft Green */
-    --chart-4: 190 60% 90%; /* Soft Sky */
-    --chart-5: 280 70% 92%; /* Soft Lavender */
+    --chart-1: 0 70% 90%;
+    --chart-2: 60 70% 90%;
+    --chart-3: 120 40% 90%;
+    --chart-4: 190 60% 90%;
+    --chart-5: 280 70% 92%;
     --radius: 0.5rem;
     --sidebar-background: 0 0% 100%;
     --sidebar-foreground: 240 5% 35%;
@@ -41,19 +41,19 @@
   }
   .dark,
   [data-theme='default-dark'] {
-    --background: 240 10% 10%; /* Softer dark background */
-    --foreground: 0 0% 80%; /* Lighter foreground */
+    --background: 240 10% 10%;
+    --foreground: 0 0% 80%;
     --card: 240 10% 8%;
     --card-foreground: 0 0% 80%;
     --popover: 240 10% 8%;
     --popover-foreground: 0 0% 80%;
-    --primary: 215 60% 25%; /* Muted dark blue */
+    --primary: 215 60% 25%;
     --primary-foreground: 0 0% 90%;
     --secondary: 240 3.7% 15.9%;
     --secondary-foreground: 0 0% 98%;
     --muted: 240 3.7% 15.9%;
     --muted-foreground: 240 5% 64.9%;
-    --accent: 150 40% 25%; /* Muted dark mint */
+    --accent: 150 40% 25%;
     --accent-foreground: 0 0% 90%;
     --destructive: 0 62.8% 30.6%;
     --destructive-foreground: 0 0% 98%;
@@ -177,5 +177,10 @@
   }
   [data-mood='annoyed'] {
     --chat-primary: hsl(var(--chart-1));
+  }
+
+  [data-mood] {
+    --sidebar-accent: var(--chat-primary) / 0.15;
+    --sidebar-accent-foreground: var(--chat-primary);
   }
 }

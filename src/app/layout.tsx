@@ -3,6 +3,7 @@ import './globals.css';
 import { AppShell } from '@/components/app-shell';
 import { Toaster } from "@/components/ui/toaster";
 import { ThemeProvider } from '@/components/theme-provider';
+import { MoodProvider } from '@/hooks/use-mood';
 
 export const metadata: Metadata = {
   title: 'Zenalth',
@@ -27,9 +28,11 @@ export default function RootLayout({
           defaultTheme="default"
           enableSystem={false}
         >
-          <AppShell>
-            {children}
-          </AppShell>
+          <MoodProvider>
+            <AppShell>
+              {children}
+            </AppShell>
+          </MoodProvider>
           <Toaster />
         </ThemeProvider>
       </body>
