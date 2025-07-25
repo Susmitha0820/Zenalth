@@ -1,4 +1,5 @@
 
+
 "use client";
 
 import { useState, useRef, useEffect } from "react";
@@ -14,6 +15,9 @@ import { Separator } from "@/components/ui/separator";
 import { Alert, AlertTitle, AlertDescription } from "@/components/ui/alert";
 import type { Resource } from "@/lib/resources";
 import { Badge } from "@/components/ui/badge";
+import { useAuth } from "@/hooks/use-auth";
+import { useRouter } from "next/navigation";
+
 
 type Mood = "joyful" | "happy" | "neutral" | "sad" | "annoyed" | "default";
 
@@ -46,6 +50,8 @@ export default function Home() {
   const [isClient, setIsClient] = useState(false);
   const [mood, setMood] = useState<Mood>("default");
   const [language, setLanguage] = useState("English");
+  const { user, loading } = useAuth();
+  const router = useRouter();
 
   useEffect(() => {
     setIsClient(true);
@@ -79,6 +85,12 @@ export default function Home() {
       });
     }
   }, [messages]);
+
+  useEffect(() => {
+    if (!loading && !user) {
+      router.push('/login');
+    }
+  }, [user, loading, router]);
   
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -133,6 +145,14 @@ export default function Home() {
         setIsLoading(false);
     }
   };
+  
+  if (loading || !user) {
+    return (
+        <div className="flex items-center justify-center h-screen">
+            <div className="w-16 h-16 border-4 border-dashed rounded-full animate-spin border-primary"></div>
+        </div>
+    );
+  }
   
   if (!isClient) {
     return null;

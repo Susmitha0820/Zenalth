@@ -1,4 +1,5 @@
 
+
 "use client";
 
 import { useEffect, useState } from "react";
@@ -6,7 +7,7 @@ import { useTheme } from "next-themes";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Label } from "@/components/ui/label";
-import { Moon, Sun, Palette, Languages } from "lucide-react";
+import { Moon, Sun, Palette, Languages, UserCircle } from "lucide-react";
 import {
   Select,
   SelectContent,
@@ -14,11 +15,13 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { useAuth } from "@/hooks/use-auth";
 
 export default function SettingsPage() {
   const { theme, setTheme, systemTheme } = useTheme();
   const [language, setLanguage] = useState("English");
   const [isClient, setIsClient] = useState(false);
+  const { user } = useAuth();
 
   useEffect(() => {
     setIsClient(true);
@@ -72,6 +75,30 @@ export default function SettingsPage() {
       </header>
 
       <div className="grid gap-6 max-w-2xl">
+         <Card>
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2"><UserCircle size={22} className="text-primary"/> Account</CardTitle>
+            <CardDescription>
+              Manage your account details.
+            </CardDescription>
+          </CardHeader>
+          <CardContent>
+            {user ? (
+                <div className="flex items-center gap-4">
+                    <div className="w-12 h-12 rounded-full bg-muted flex items-center justify-center text-muted-foreground font-bold text-xl">
+                        {user.email?.charAt(0).toUpperCase()}
+                    </div>
+                    <div>
+                        <p className="font-semibold">{user.displayName || "Anonymous User"}</p>
+                        <p className="text-sm text-muted-foreground">{user.email}</p>
+                    </div>
+                </div>
+            ) : (
+                <p>You are not logged in.</p>
+            )}
+          </CardContent>
+        </Card>
+
         <Card>
           <CardHeader>
             <CardTitle className="flex items-center gap-2"><Palette size={22} className="text-primary"/> App Theme</CardTitle>
