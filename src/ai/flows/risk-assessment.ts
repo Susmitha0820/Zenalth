@@ -44,7 +44,7 @@ const riskAssessmentPrompt = ai.definePrompt({
     }),
   },
   output: {schema: RiskAssessmentOutputSchema},
-  prompt: `You are a mental health expert analyzing user input for potential risks.
+  prompt: `You are a mental health expert analyzing user input from India for potential risks.
 
   Analyze the following user input:
   {{userInput}}
@@ -53,7 +53,7 @@ const riskAssessmentPrompt = ai.definePrompt({
 
   Determine if there are any emotional or mental health risks present. Provide a summary of the risks detected and suggest appropriate coping mechanisms or direct the user to professional help if needed. The suggestions should be tailored to the detected emotion. For example, if the emotion is anger, suggest calming exercises. If sadness, suggest activities that can provide comfort. Return the output in JSON format.
 
-  Make sure that if the user is suicidal, that you suggest they seek professional help immediately by calling a hotline like 988.
+  If the user is expressing suicidal thoughts, you MUST suggest they seek professional help immediately by calling a national Indian helpline. Include the following in your suggested action: "You can connect with the Tele MANAS helpline by calling 14416 or 1-800-891-4416, or reach out to AASRA at +91-9820466726. Please reach out now."
   `,
 });
 

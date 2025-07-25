@@ -11,40 +11,40 @@ type Resource = {
 
 const resources: Resource[] = [
   {
-    title: "Understanding Anxiety",
-    description: "Learn about the symptoms, causes, and treatments for anxiety in this comprehensive guide from NIMH.",
-    type: "Article",
-    link: "https://www.nimh.nih.gov/health/topics/anxiety-disorders",
-  },
-  {
-    title: "Crisis Text Line",
-    description: "In crisis? Text HOME to 741741 from anywhere in the US, anytime, about any type of crisis.",
+    title: "Tele MANAS National Helpline",
+    description: "A 24/7 national tele-mental health program. Call 14416 or 1-800-891-4416 for support.",
     type: "Helpline",
-    link: "https://www.crisistextline.org/",
+    link: "https://telemanas.mohfw.gov.in/",
   },
   {
-    title: "5-Minute Mindfulness Meditation",
-    description: "A short, guided meditation to help you calm your mind and reduce stress.",
-    type: "Exercise",
-    link: "https://www.youtube.com/watch?v=inpok4MKVLM",
-  },
-  {
-    title: "The National Suicide Prevention Lifeline",
-    description: "Call or text 988 for 24/7, free and confidential support for people in distress.",
+    title: "AASRA",
+    description: "Provides confidential support for individuals in distress and facing suicidal thoughts. Call +91-9820466726.",
     type: "Helpline",
-    link: "https://988lifeline.org/",
+    link: "http://www.aasra.info/",
   },
   {
-    title: "Dealing with Burnout",
-    description: "Tips and strategies for recognizing and overcoming academic and social burnout.",
+    title: "Vandrevala Foundation",
+    description: "A 24x7 helpline providing free psychological counseling and crisis intervention.",
+    type: "Helpline",
+    link: "https://www.vandrevalafoundation.com/",
+  },
+  {
+    title: "iCALL (TISS)",
+    description: "A psychosocial helpline offering free telephone and email-based counseling services by trained professionals.",
+    type: "Helpline",
+    link: "http://icallhelpline.org/",
+  },
+  {
+    title: "Understanding Stress",
+    description: "An article from the Government of India on how to manage and reduce stress in daily life.",
     type: "Article",
-    link: "https://www.helpguide.org/articles/stress/burnout-prevention-and-recovery.htm",
+    link: "https://www.nhp.gov.in/healthlyliving/stress-management",
   },
   {
-    title: "Box Breathing Exercise",
-    description: "A simple but powerful technique to calm your nervous system in just a few minutes.",
+    title: "Simple Breathing Exercise",
+    description: "A simple but powerful technique from a certified Indian yoga instructor to calm your nervous system.",
     type: "Exercise",
-    link: "https://www.youtube.com/watch?v=tEmt1Znux58",
+    link: "https://www.youtube.com/watch?v=F28MGLlpP90",
   },
 ];
 
@@ -54,7 +54,7 @@ export default function ResourcesPage() {
       <header className="mb-6">
         <h1 className="text-3xl font-bold font-headline">Resources Hub</h1>
         <p className="text-muted-foreground mt-1">
-          Curated articles, exercises, and helplines for your well-being.
+          Curated Indian articles, exercises, and helplines for your well-being.
         </p>
       </header>
       <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
