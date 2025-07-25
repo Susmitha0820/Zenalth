@@ -35,6 +35,8 @@ const EmpatheticResponseOutputSchema = z.object({
       link: z.string(),
     })
     .optional()
+    .nullable()
+    .transform(v => v ?? undefined)
     .describe('A relevant resource suggested to the user.'),
 });
 export type EmpatheticResponseOutput = z.infer<
