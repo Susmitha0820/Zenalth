@@ -74,7 +74,7 @@ const empatheticResponseFlow = ai.defineFlow(
     if (!output) {
       return {response: 'I am not sure how to respond to that.'};
     }
-    const toolCalls = llmResponse.toolCalls(getRelevantResources.name);
+    const toolCalls = llmResponse.toolCalls?.filter(tc => tc.tool === getRelevantResources.name) || [];
 
     if (toolCalls.length > 0) {
       const toolCall = toolCalls[0];
