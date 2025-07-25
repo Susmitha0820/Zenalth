@@ -1,6 +1,12 @@
+
+"use client";
+
+import { useState } from "react";
 import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { ArrowRight } from "lucide-react";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { ArrowRight, MapPin } from "lucide-react";
+import { Separator } from "@/components/ui/separator";
 
 type Resource = {
   title: string;
@@ -9,7 +15,7 @@ type Resource = {
   link: string;
 };
 
-const resources: Resource[] = [
+const nationalResources: Resource[] = [
   {
     title: "Tele MANAS National Helpline",
     description: "A 24/7 national tele-mental health program. Call 14416 or 1-800-891-4416 for support.",
@@ -34,7 +40,7 @@ const resources: Resource[] = [
     type: "Helpline",
     link: "http://icallhelpline.org/",
   },
-  {
+   {
     title: "Understanding Stress",
     description: "An article from the Government of India on how to manage and reduce stress in daily life.",
     type: "Article",
@@ -48,7 +54,33 @@ const resources: Resource[] = [
   },
 ];
 
+type StateHelpline = {
+  state: string;
+  name: string;
+  number: string;
+  link?: string;
+};
+
+const stateHelplines: StateHelpline[] = [
+    { state: "Andhra Pradesh", name: "104 Health Helpline", number: "104" },
+    { state: "Delhi", name: "Sumaitri", number: "011-23389090" },
+    { state: "Gujarat", name: "Jeevan Aastha Helpline", number: "1800-233-3330" },
+    { state: "Karnataka", name: "SAHAI Helpline", number: "080-25497777" },
+    { state: "Kerala", name: "Maithri", number: "0484-2540530" },
+    { state: "Maharashtra", name: "Connecting India", number: "9922004305" },
+    { state: "Punjab", name: "104 Medical Helpline", number: "104" },
+    { state: "Rajasthan", name: "Hope Helpline", number: "0141-2711000" },
+    { state: "Tamil Nadu", name: "SNEHA", number: "044-24640050" },
+    { state: "Telangana", name: "Roshni Trust", number: "040-66202000" },
+    { state: "Uttar Pradesh", name: "1800-180-5145 Helpline", number: "1800-180-5145" },
+    { state: "West Bengal", name: "Lifeline Foundation", number: "033-24637401" },
+];
+
+
 export default function ResourcesPage() {
+  const [selectedState, setSelectedState] = useState("");
+  const filteredHelplines = stateHelplines.filter(h => h.state === selectedState);
+
   return (
     <div className="p-4 md:p-6">
       <header className="mb-6">
@@ -57,8 +89,9 @@ export default function ResourcesPage() {
           Curated Indian articles, exercises, and helplines for your well-being.
         </p>
       </header>
-      <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-        {resources.map((resource, index) => (
+
+      <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3 mb-8">
+        {nationalResources.map((resource, index) => (
           <Card key={index} className="flex flex-col transition-transform transform hover:-translate-y-1">
             <CardHeader>
               <div className="flex justify-between items-start">
@@ -80,6 +113,52 @@ export default function ResourcesPage() {
           </Card>
         ))}
       </div>
+
+      <Separator className="my-8" />
+      
+      <div className="space-y-6">
+        <header>
+            <h2 className="text-2xl font-bold font-headline flex items-center gap-2"><MapPin className="text-primary"/> State-Specific Helplines</h2>
+            <p className="text-muted-foreground mt-1">
+             Select your state to find mental health helplines available in your area.
+            </p>
+        </header>
+
+         <Card className="max-w-md mx-auto">
+            <CardContent className="p-6">
+                <div className="space-y-4">
+                    <Select onValueChange={setSelectedState} value={selectedState}>
+                        <SelectTrigger>
+                            <SelectValue placeholder="Select your state..." />
+                        </SelectTrigger>
+                        <SelectContent>
+                            {stateHelplines.map(s => s.state).filter((v, i, a) => a.indexOf(v) === i).sort().map(stateName => (
+                                <SelectItem key={stateName} value={stateName}>
+                                    {stateName}
+                                </SelectItem>
+                            ))}
+                        </SelectContent>
+                    </Select>
+
+                    {selectedState && (
+                        <div className="space-y-3 pt-4">
+                           {filteredHelplines.length > 0 ? (
+                                filteredHelplines.map((helpline, index) => (
+                                   <div key={index} className="p-3 rounded-md bg-muted/50">
+                                       <p className="font-semibold">{helpline.name}</p>
+                                       <p className="text-sm text-muted-foreground">Phone: {helpline.number}</p>
+                                   </div>
+                                ))
+                           ) : (
+                             <p className="text-sm text-center text-muted-foreground">No specific helplines found for {selectedState}. Please use the national helplines listed above.</p>
+                           )}
+                        </div>
+                    )}
+                </div>
+            </CardContent>
+         </Card>
+      </div>
+
     </div>
   );
 }
