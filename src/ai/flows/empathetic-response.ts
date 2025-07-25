@@ -57,7 +57,12 @@ export async function empatheticResponse(
 
 const prompt = ai.definePrompt({
   name: 'empatheticResponsePrompt',
-  input: {schema: EmpatheticResponseInputSchema},
+  input: {
+    schema: z.object({
+      userInput: EmpatheticResponseInputSchema.shape.userInput,
+      language: EmpatheticResponseInputSchema.shape.language,
+    }),
+  },
   output: {schema: EmpatheticResponseOutputSchema},
   tools: [getRelevantResources],
   prompt: `You are an AI designed to provide empathetic and supportive responses to users, with a focus on clarifying their feelings. A user has provided the following input: "{{{userInput}}}".
