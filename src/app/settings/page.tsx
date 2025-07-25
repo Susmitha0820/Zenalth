@@ -31,6 +31,8 @@ export default function SettingsPage() {
   const handleLanguageChange = (newLanguage: string) => {
     setLanguage(newLanguage);
     localStorage.setItem("chatLanguage", newLanguage);
+    // You might want to dispatch an event here if other components need to react instantly
+    window.dispatchEvent(new StorageEvent('storage', { key: 'chatLanguage', newValue: newLanguage }));
   };
 
   // The actual theme value, considering system preference for the 'system' option
