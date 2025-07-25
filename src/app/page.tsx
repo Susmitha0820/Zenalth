@@ -9,10 +9,11 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { empatheticResponse } from "@/ai/flows/empathetic-response";
 import { assessRisk } from "@/ai/flows/risk-assessment";
 import { detectEmotion } from "@/ai/flows/emotion-detection";
-import { Send, AlertTriangle, ShieldCheck, User, Bot } from "lucide-react";
+import { Send, AlertTriangle, ShieldCheck, User, Bot, LifeBuoy, ArrowRight } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import { Alert, AlertTitle, AlertDescription } from "@/components/ui/alert";
+import type { Resource } from "@/lib/resources";
 
 type Mood = "joyful" | "happy" | "neutral" | "sad" | "annoyed" | "default";
 
@@ -21,6 +22,7 @@ type ChatMessage = {
   content: string;
   riskSummary?: string;
   suggestedAction?: string;
+  recommendedResource?: Resource;
 };
 
 // Mapping from detected emotion to mood for theming
@@ -100,6 +102,7 @@ export default function Home() {
         const assistantMessage: ChatMessage = {
             role: "assistant",
             content: response.response,
+            recommendedResource: response.recommendedResource,
         };
         setMessages((prev) => [...prev, assistantMessage]);
 
@@ -170,8 +173,28 @@ export default function Home() {
                      <Avatar className="w-8 h-8">
                        <AvatarFallback className="bg-muted"><Bot size={16} className="text-muted-foreground" /></AvatarFallback>
                      </Avatar>
-                    <div className="bg-muted p-3 rounded-lg max-w-sm">
+                    <div className="bg-muted p-3 rounded-lg max-w-sm space-y-3">
                       <p>{message.content}</p>
+                      {message.recommendedResource && (
+                        <Card className="bg-background/50">
+                            <CardHeader className="flex-row items-start gap-3 space-y-0 p-3">
+                                <div className="p-2 bg-accent/50 rounded-full">
+                                    <LifeBuoy className="w-5 h-5 text-accent-foreground" />
+                                </div>
+                                <div>
+                                    <CardTitle className="text-sm font-semibold">{message.recommendedResource.title}</CardTitle>
+                                    <CardDescription className="text-xs">{message.recommendedResource.description}</CardDescription>
+                                </div>
+                            </CardHeader>
+                            <CardContent className="p-3 pt-0">
+                                <Button asChild variant="secondary" size="sm" className="w-full">
+                                    <a href={message.recommendedResource.link} target="_blank" rel="noopener noreferrer">
+                                    Open Resource <ArrowRight className="ml-2 h-4 w-4" />
+                                    </a>
+                                </Button>
+                            </CardContent>
+                        </Card>
+                      )}
                     </div>
                   </div>
                 )}
