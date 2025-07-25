@@ -40,11 +40,11 @@ export default function JournalPage() {
   const getSentimentIcon = (sentiment: "Positive" | "Negative" | "Neutral") => {
     switch (sentiment) {
       case "Positive":
-        return <Smile className="w-5 h-5 text-green-500" />;
+        return <Smile className="w-5 h-5 text-[hsl(var(--chart-5))]" />;
       case "Negative":
-        return <Frown className="w-5 h-5 text-red-500" />;
+        return <Frown className="w-5 h-5 text-[hsl(var(--chart-1))]" />;
       case "Neutral":
-        return <Meh className="w-5 h-5 text-gray-500" />;
+        return <Meh className="w-5 h-5 text-[hsl(var(--chart-3))]" />;
     }
   };
 
@@ -74,7 +74,7 @@ export default function JournalPage() {
               className="resize-none"
             />
             <Alert variant="default" className="text-sm">
-                <ShieldCheck className="h-4 w-4 text-accent-foreground" />
+                <ShieldCheck className="h-4 w-4 text-primary" />
                 <AlertTitle>Privacy First</AlertTitle>
                 <AlertDescription>
                    Your journal entries are processed for analysis but are never stored. Your privacy is protected.

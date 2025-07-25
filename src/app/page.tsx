@@ -168,7 +168,7 @@ export default function Home() {
                 {message.role === 'assistant' && (
                   <div className="flex items-start gap-3">
                      <Avatar className="w-8 h-8">
-                       <AvatarFallback><Bot size={16} /></AvatarFallback>
+                       <AvatarFallback className="bg-muted"><Bot size={16} className="text-muted-foreground" /></AvatarFallback>
                      </Avatar>
                     <div className="bg-muted p-3 rounded-lg max-w-sm">
                       <p>{message.content}</p>
@@ -222,12 +222,12 @@ export default function Home() {
             disabled={isLoading}
             aria-label="Chat input"
           />
-          <Button type="submit" disabled={isLoading} size="icon" aria-label="Send message">
+          <Button type="submit" disabled={isLoading} size="icon" aria-label="Send message" className="bg-[--chat-primary] text-primary-foreground hover:bg-[--chat-primary]/90">
             <Send />
           </Button>
         </form>
          <Alert variant="default" className="text-xs mt-2 py-2 px-3">
-            <ShieldCheck className="h-4 w-4 text-accent-foreground" />
+            <ShieldCheck className="h-4 w-4 text-primary" />
             <AlertDescription>
                 Your conversation is private. Messages are processed by the AI but never stored.
             </AlertDescription>
