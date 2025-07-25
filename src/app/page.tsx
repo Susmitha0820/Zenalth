@@ -146,7 +146,7 @@ export default function Home() {
           <div className="space-y-6">
             {messages.length === 0 && (
                 <div className="text-center text-muted-foreground py-16">
-                    <Bot size={48} className="mx-auto mb-4" />
+                    <Bot size={48} className="mx-auto mb-4 text-primary" />
                     <p className="font-semibold">How are you feeling today?</p>
                     <p className="text-sm">I'm here to listen without judgment.</p>
                 </div>
@@ -160,8 +160,8 @@ export default function Home() {
                     >
                       <p>{message.content}</p>
                     </div>
-                    <Avatar className="w-8 h-8">
-                      <AvatarFallback><User size={16} /></AvatarFallback>
+                    <Avatar className="w-8 h-8 border-2 border-[--chat-primary]">
+                      <AvatarFallback className="bg-[--chat-primary]/20"><User size={16} className="text-[--chat-primary]" /></AvatarFallback>
                     </Avatar>
                   </div>
                 )}
@@ -227,7 +227,7 @@ export default function Home() {
           </Button>
         </form>
          <Alert variant="default" className="text-xs mt-2 py-2 px-3">
-            <ShieldCheck className="h-4 w-4" />
+            <ShieldCheck className="h-4 w-4 text-accent-foreground" />
             <AlertDescription>
                 Your conversation is private. Messages are processed by the AI but never stored.
             </AlertDescription>

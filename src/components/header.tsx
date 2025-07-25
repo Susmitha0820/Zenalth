@@ -1,3 +1,4 @@
+
 "use client";
 
 import Link from "next/link";
@@ -67,7 +68,7 @@ export function Header() {
 
         <div className="flex items-center gap-2">
            <Link href="/settings" className={cn(
-             "hidden md:flex items-center justify-center rounded-md h-9 w-9",
+             "hidden md:flex items-center justify-center rounded-md h-9 w-9 transition-colors",
              pathname === "/settings"
               ? "bg-accent text-accent-foreground"
               : "text-muted-foreground hover:bg-accent/50 hover:text-accent-foreground"
@@ -85,9 +86,9 @@ export function Header() {
                   <span className="sr-only">Toggle navigation menu</span>
                 </Button>
               </SheetTrigger>
-              <SheetContent side="left">
+              <SheetContent side="left" className="p-0">
                 <div className="flex flex-col gap-4 p-4">
-                  <Link href="/" className="flex items-center gap-2 mb-4">
+                  <Link href="/" className="flex items-center gap-2 mb-4 px-2">
                      <div className="bg-primary p-2 rounded-lg">
                         <Heart className="text-primary-foreground h-5 w-5" />
                      </div>

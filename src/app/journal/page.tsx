@@ -52,7 +52,7 @@ export default function JournalPage() {
   return (
     <div className="p-4 md:p-6">
       <header className="mb-6">
-        <h1 className="text-3xl font-bold">AI Journal</h1>
+        <h1 className="text-3xl font-bold font-headline">AI Journal</h1>
         <p className="text-muted-foreground mt-1">
           Write down your thoughts and let an AI help you find clarity and encouragement.
         </p>
@@ -74,7 +74,7 @@ export default function JournalPage() {
               className="resize-none"
             />
             <Alert variant="default" className="text-sm">
-                <ShieldCheck className="h-4 w-4" />
+                <ShieldCheck className="h-4 w-4 text-accent-foreground" />
                 <AlertTitle>Privacy First</AlertTitle>
                 <AlertDescription>
                    Your journal entries are processed for analysis but are never stored. Your privacy is protected.
@@ -114,12 +114,12 @@ export default function JournalPage() {
                     </Alert>
                  )}
                 <div>
-                  <h3 className="font-semibold flex items-center gap-2 mb-2"><BookText size={18}/> Summary</h3>
+                  <h3 className="font-semibold flex items-center gap-2 mb-2"><BookText size={18} className="text-primary"/> Summary</h3>
                   <p className="text-sm text-muted-foreground bg-muted/50 p-3 rounded-md">{analysis.summary}</p>
                 </div>
                 <Separator />
                 <div>
-                    <h3 className="font-semibold flex items-center gap-2 mb-3"><MessageCircleQuestion size={18}/> Key Themes & Suggestions</h3>
+                    <h3 className="font-semibold flex items-center gap-2 mb-3"><MessageCircleQuestion size={18} className="text-primary"/> Key Themes & Suggestions</h3>
                     <Accordion type="single" collapsible className="w-full">
                         {analysis.themes.map((item, i) => (
                            <AccordionItem value={`item-${i}`} key={i}>
@@ -145,7 +145,7 @@ export default function JournalPage() {
               </div>
             ) : (
               <div className="flex flex-col items-center justify-center h-64 text-center text-muted-foreground">
-                <Wand2 size={40} className="mb-4" />
+                <Wand2 size={40} className="mb-4 opacity-50" />
                 <p>Your analysis will appear here once you submit an entry.</p>
               </div>
             )}

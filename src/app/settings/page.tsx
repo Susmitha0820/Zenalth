@@ -74,7 +74,7 @@ export default function SettingsPage() {
       <div className="grid gap-6 max-w-2xl">
         <Card>
           <CardHeader>
-            <CardTitle className="flex items-center gap-2"><Palette size={22} /> App Theme</CardTitle>
+            <CardTitle className="flex items-center gap-2"><Palette size={22} className="text-primary"/> App Theme</CardTitle>
             <CardDescription>
               Choose a color palette that feels most comfortable to you.
             </CardDescription>
@@ -114,7 +114,7 @@ export default function SettingsPage() {
 
         <Card>
           <CardHeader>
-            <CardTitle className="flex items-center gap-2"><Languages size={22} /> Language</CardTitle>
+            <CardTitle className="flex items-center gap-2"><Languages size={22} className="text-primary"/> Language</CardTitle>
             <CardDescription>
               Choose the language for your conversations with the AI.
             </CardDescription>

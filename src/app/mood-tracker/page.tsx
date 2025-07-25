@@ -207,7 +207,7 @@ export default function MoodTrackerPage() {
                       )}
                       {generatedQuote && (
                          <Alert variant="default" className="text-center bg-accent/30 border-accent/50">
-                            <Wand2 className="h-4 w-4"/>
+                            <Wand2 className="h-4 w-4 text-accent-foreground"/>
                             <AlertTitle>A Thought For You</AlertTitle>
                             <AlertDescription>
                                 "{generatedQuote}"
