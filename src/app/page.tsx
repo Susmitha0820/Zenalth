@@ -2,14 +2,13 @@
 "use client";
 
 import { useState, useRef, useEffect } from "react";
-import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { empatheticResponse } from "@/ai/flows/empathetic-response";
 import { assessRisk } from "@/ai/flows/risk-assessment";
 import { detectEmotion } from "@/ai/flows/emotion-detection";
-import { Send, AlertTriangle, ShieldCheck, User, Bot, LifeBuoy, ArrowRight } from "lucide-react";
+import { Send, AlertTriangle, ShieldCheck, LifeBuoy, ArrowRight, MessageSquare } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import { Alert, AlertTitle, AlertDescription } from "@/components/ui/alert";
@@ -149,7 +148,7 @@ export default function Home() {
           <div className="space-y-6">
             {messages.length === 0 && (
                 <div className="text-center text-muted-foreground py-16">
-                    <Bot size={48} className="mx-auto mb-4 text-primary" />
+                    <MessageSquare size={48} className="mx-auto mb-4 text-primary" />
                     <p className="font-semibold">How are you feeling today?</p>
                     <p className="text-sm">I'm here to listen without judgment.</p>
                 </div>
@@ -163,16 +162,10 @@ export default function Home() {
                     >
                       <p>{message.content}</p>
                     </div>
-                    <Avatar className="w-8 h-8 border-2 border-[--chat-primary]">
-                      <AvatarFallback className="bg-[--chat-primary]/20"><User size={16} className="text-[--chat-primary]" /></AvatarFallback>
-                    </Avatar>
                   </div>
                 )}
                 {message.role === 'assistant' && (
-                  <div className="flex items-start gap-3">
-                     <Avatar className="w-8 h-8">
-                       <AvatarFallback className="bg-muted"><Bot size={16} className="text-muted-foreground" /></AvatarFallback>
-                     </Avatar>
+                  <div className="flex items-start gap-3 justify-start">
                     <div className="bg-muted p-3 rounded-lg max-w-sm space-y-3">
                       <p>{message.content}</p>
                       {message.recommendedResource && (
@@ -219,10 +212,7 @@ export default function Home() {
               </div>
             ))}
             {isLoading && (
-              <div className="flex items-start gap-3">
-                <Avatar className="w-8 h-8">
-                    <AvatarFallback><Bot size={16} /></AvatarFallback>
-                </Avatar>
+              <div className="flex items-start gap-3 justify-start">
                 <div className="bg-muted p-3 rounded-lg">
                   <div className="flex items-center gap-2">
                     <span className="h-2 w-2 bg-foreground/50 rounded-full animate-pulse [animation-delay:-0.3s]"></span>
