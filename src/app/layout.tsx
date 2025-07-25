@@ -1,9 +1,8 @@
 import type {Metadata} from 'next';
 import './globals.css';
-import { AppShell } from '@/components/app-shell';
 import { Toaster } from "@/components/ui/toaster";
 import { ThemeProvider } from '@/components/theme-provider';
-import { MoodProvider } from '@/hooks/use-mood';
+import { Header } from '@/components/header';
 
 export const metadata: Metadata = {
   title: 'Zenalth',
@@ -28,11 +27,8 @@ export default function RootLayout({
           defaultTheme="default"
           enableSystem={false}
         >
-          <MoodProvider>
-            <AppShell>
-              {children}
-            </AppShell>
-          </MoodProvider>
+          <Header />
+          <main>{children}</main>
           <Toaster />
         </ThemeProvider>
       </body>

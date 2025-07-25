@@ -13,8 +13,8 @@ import { Send, AlertTriangle, ShieldCheck, User, Bot } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import { Alert, AlertTitle, AlertDescription } from "@/components/ui/alert";
-import { useMood, type Mood } from "@/hooks/use-mood";
 
+type Mood = "joyful" | "happy" | "neutral" | "sad" | "annoyed" | "default";
 
 type ChatMessage = {
   role: "user" | "assistant" | "risk-assessment";
@@ -41,14 +41,14 @@ export default function Home() {
   const [isLoading, setIsLoading] = useState(false);
   const scrollAreaRef = useRef<HTMLDivElement>(null);
   const [isClient, setIsClient] = useState(false);
-  const { setMood } = useMood();
+  const [mood, setMood] = useState<Mood>("default");
   const [language, setLanguage] = useState("English");
 
   useEffect(() => {
     setIsClient(true);
     // Load initial mood from mood tracker, but it will be updated by chat
-    const mood = (localStorage.getItem("currentMood") as Mood) || "default";
-    setMood(mood);
+    const initialMood = (localStorage.getItem("currentMood") as Mood) || "default";
+    setMood(initialMood);
 
     const savedLanguage = localStorage.getItem("chatLanguage") || "English";
     setLanguage(savedLanguage);
@@ -66,7 +66,7 @@ export default function Home() {
     return () => {
         window.removeEventListener('storage', handleStorageChange);
     }
-  }, [setMood]);
+  }, []);
 
   useEffect(() => {
     if (scrollAreaRef.current) {
@@ -134,7 +134,7 @@ export default function Home() {
   }
   
   return (
-    <div className="flex flex-col h-screen p-4 md:p-6 bg-muted/20">
+    <div className="flex flex-col h-[calc(100vh-var(--header-height))] p-4 md:p-6 bg-muted/20" data-mood={mood}>
       <header className="mb-4">
         <h1 className="text-2xl font-bold font-headline">Empathetic Chat</h1>
         <p className="text-muted-foreground">
