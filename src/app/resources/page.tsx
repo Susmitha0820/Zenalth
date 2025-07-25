@@ -58,20 +58,24 @@ type StateHelpline = {
   state: string;
   name: string;
   number: string;
+  description?: string;
   link?: string;
 };
 
 const stateHelplines: StateHelpline[] = [
     { state: "Andhra Pradesh", name: "104 Health Helpline", number: "104" },
-    { state: "Delhi", name: "Sumaitri", number: "011-23389090" },
+    { state: "Delhi", name: "Sumaitri", number: "011-23389090", description: "Crisis intervention for those who are distressed and suicidal." },
     { state: "Gujarat", name: "Jeevan Aastha Helpline", number: "1800-233-3330" },
     { state: "Karnataka", name: "SAHAI Helpline", number: "080-25497777" },
-    { state: "Kerala", name: "Maithri", number: "0484-2540530" },
+    { state: "Kerala", name: "Maithri", number: "0484-2540530", description: "A suicide prevention helpline." },
     { state: "Maharashtra", name: "Connecting India", number: "9922004305" },
     { state: "Punjab", name: "104 Medical Helpline", number: "104" },
     { state: "Rajasthan", name: "Hope Helpline", number: "0141-2711000" },
-    { state: "Tamil Nadu", name: "SNEHA", number: "044-24640050" },
-    { state: "Telangana", name: "Roshni Trust", number: "040-66202000" },
+    { state: "Tamil Nadu", name: "SNEHA", number: "044-24640050", description: "Suicide prevention centre offering unconditional emotional support." },
+    { state: "Telangana", name: "Roshni Trust", number: "040-66202000", description: "For depression and suicidal distress." },
+    { state: "Telangana", name: "SHE Teams", number: "Dial 100 or WhatsApp 9490616555", description: "For women's safety and to report stalking or harassment."},
+    { state: "Telangana", name: "Police Dail 100", number: "100", description: "For immediate police assistance in any emergency."},
+    { state: "Telangana", name: "Women Helpline", number: "181", description: "24/7 helpline for women facing violence or distress."},
     { state: "Uttar Pradesh", name: "1800-180-5145 Helpline", number: "1800-180-5145" },
     { state: "West Bengal", name: "Lifeline Foundation", number: "033-24637401" },
 ];
@@ -120,7 +124,7 @@ export default function ResourcesPage() {
         <header>
             <h2 className="text-2xl font-bold font-headline flex items-center gap-2"><MapPin className="text-primary"/> State-Specific Helplines</h2>
             <p className="text-muted-foreground mt-1">
-             Select your state to find mental health helplines available in your area.
+             Select your state to find mental health helplines and other support services available in your area.
             </p>
         </header>
 
@@ -146,7 +150,10 @@ export default function ResourcesPage() {
                                 filteredHelplines.map((helpline, index) => (
                                    <div key={index} className="p-3 rounded-md bg-muted/50">
                                        <p className="font-semibold">{helpline.name}</p>
-                                       <p className="text-sm text-muted-foreground">Phone: {helpline.number}</p>
+                                       <p className="text-sm text-muted-foreground font-medium">Contact: {helpline.number}</p>
+                                       {helpline.description && (
+                                         <p className="text-xs text-muted-foreground mt-1">{helpline.description}</p>
+                                       )}
                                    </div>
                                 ))
                            ) : (
