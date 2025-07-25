@@ -8,7 +8,7 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { empatheticResponse } from "@/ai/flows/empathetic-response";
 import { assessRisk } from "@/ai/flows/risk-assessment";
 import { detectEmotion } from "@/ai/flows/emotion-detection";
-import { Send, AlertTriangle, ShieldCheck, LifeBuoy, ArrowRight, MessageSquare, Tag } from "lucide-react";
+import { Send, Heart, ShieldCheck, LifeBuoy, ArrowRight, MessageSquare, Tag } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import { Alert, AlertTitle, AlertDescription } from "@/components/ui/alert";
@@ -201,19 +201,19 @@ export default function Home() {
                   </div>
                 )}
                 {message.role === 'risk-assessment' && (
-                    <Card className="border-destructive/50 bg-destructive/10 my-4">
+                    <Card className="border-accent/50 bg-accent/10 my-4">
                         <CardHeader className="flex flex-row items-center gap-3 space-y-0 p-4">
-                            <AlertTriangle className="text-destructive w-6 h-6"/>
+                            <Heart className="text-accent-foreground w-6 h-6"/>
                             <div>
                                 <CardTitle>A Note of Care</CardTitle>
-                                <CardDescription className="text-destructive/80 text-xs">
+                                <CardDescription className="text-accent-foreground/80 text-xs">
                                     It sounds like you're going through a lot.
                                 </CardDescription>
                             </div>
                         </CardHeader>
                         <CardContent className="p-4 pt-0">
                             <p className="text-sm font-medium mb-2">{message.riskSummary}</p>
-                            <Separator className="my-2 bg-destructive/20"/>
+                            <Separator className="my-2 bg-accent/20"/>
                             <p className="text-sm">{message.suggestedAction}</p>
                         </CardContent>
                     </Card>
