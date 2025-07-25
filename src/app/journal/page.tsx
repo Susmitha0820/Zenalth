@@ -145,7 +145,7 @@ export default function JournalPage() {
               </div>
             ) : (
               <div className="flex flex-col items-center justify-center h-64 text-center text-muted-foreground">
-                <Wand2 size={40} className="mb-4 opacity-50" />
+                <Wand2 size={40} className="mb-4 opacity-50 text-primary" />
                 <p>Your analysis will appear here once you submit an entry.</p>
               </div>
             )}
