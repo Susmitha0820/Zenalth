@@ -5,7 +5,7 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { createUserWithEmailAndPassword } from "firebase/auth";
-import { auth } from "@/lib/firebase";
+import { auth, isFirebaseConfigured } from "@/lib/firebase";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -47,6 +47,11 @@ export default function SignupPage() {
       setIsLoading(false);
     }
   };
+  
+  if (!isFirebaseConfigured) {
+    router.push('/');
+    return null;
+  }
 
   return (
     <div className="flex items-center justify-center min-h-screen bg-muted/20 p-4">

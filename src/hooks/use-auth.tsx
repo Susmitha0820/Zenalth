@@ -6,25 +6,36 @@ import { onAuthStateChanged, User } from 'firebase/auth';
 import { auth, isFirebaseConfigured } from '@/lib/firebase';
 import { usePathname, useRouter } from 'next/navigation';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { AlertTriangle } from 'lucide-react';
+import { AlertTriangle, ShieldOff } from 'lucide-react';
+import { useToast } from './use-toast';
 
 interface AuthContextType {
   user: User | null;
   loading: boolean;
+  authBypassed: boolean;
 }
 
-const AuthContext = createContext<AuthContextType>({ user: null, loading: true });
+const AuthContext = createContext<AuthContextType>({ user: null, loading: true, authBypassed: false });
 
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
   const router = useRouter();
   const pathname = usePathname();
+  const { toast } = useToast();
+
+  const authBypassed = !isFirebaseConfigured;
 
   useEffect(() => {
-    if (!isFirebaseConfigured) {
-        setLoading(false);
-        return;
+    if (authBypassed) {
+      setLoading(false);
+      toast({
+        variant: "destructive",
+        title: "Authentication Skipped",
+        description: "Firebase is not configured. You can use the app, but user data won't be saved.",
+        duration: 8000
+      });
+      return;
     }
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       setUser(user);
@@ -32,10 +43,10 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     });
 
     return () => unsubscribe();
-  }, []);
+  }, [authBypassed, toast]);
 
   useEffect(() => {
-    if (loading || !isFirebaseConfigured) return;
+    if (loading || authBypassed) return;
 
     const isAuthPage = pathname === '/login' || pathname === '/signup';
 
@@ -44,29 +55,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     } else if (user && isAuthPage) {
       router.push('/');
     }
-  }, [user, loading, pathname, router]);
-
-  if (!isFirebaseConfigured) {
-      return (
-        <div className="flex items-center justify-center min-h-screen bg-muted/20 p-4">
-            <Card className="w-full max-w-lg border-destructive/50">
-                <CardHeader>
-                    <CardTitle className="flex items-center gap-2 text-destructive">
-                        <AlertTriangle /> Firebase Not Configured
-                    </CardTitle>
-                    <CardDescription>
-                       Your application is missing the required Firebase environment variables.
-                    </CardDescription>
-                </CardHeader>
-                <CardContent className="space-y-4 text-sm">
-                   <p>To enable user authentication and run the app, you need to add your Firebase project credentials to the <code className="bg-muted px-1 py-0.5 rounded-sm">.env</code> file in the root of this project.</p>
-                   <p>Please refer to the <code className="bg-muted px-1 py-0.5 rounded-sm">README.md</code> or Firebase documentation for instructions on how to obtain these keys.</p>
-                </CardContent>
-            </Card>
-        </div>
-      );
-  }
-
+  }, [user, loading, pathname, router, authBypassed]);
 
   if (loading) {
     return (
@@ -76,13 +65,15 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     );
   }
 
+  // If Firebase is configured, but user is not logged in on a protected page,
+  // we return null to avoid flashing content while redirect happens.
   const isAuthPage = pathname === '/login' || pathname === '/signup';
-  if (!user && !isAuthPage) {
-    return null; // or a minimal loading state, as the redirect will happen
+  if (!authBypassed && !user && !isAuthPage) {
+    return null; 
   }
 
   return (
-    <AuthContext.Provider value={{ user, loading }}>
+    <AuthContext.Provider value={{ user, loading, authBypassed }}>
       {children}
     </AuthContext.Provider>
   );

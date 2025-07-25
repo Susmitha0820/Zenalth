@@ -1,5 +1,4 @@
 
-
 "use client";
 
 import { useEffect, useState } from "react";
@@ -7,7 +6,7 @@ import { useTheme } from "next-themes";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Label } from "@/components/ui/label";
-import { Moon, Sun, Palette, Languages, UserCircle } from "lucide-react";
+import { Moon, Sun, Palette, Languages, UserCircle, ShieldOff } from "lucide-react";
 import {
   Select,
   SelectContent,
@@ -21,7 +20,7 @@ export default function SettingsPage() {
   const { theme, setTheme, systemTheme } = useTheme();
   const [language, setLanguage] = useState("English");
   const [isClient, setIsClient] = useState(false);
-  const { user } = useAuth();
+  const { user, authBypassed } = useAuth();
 
   useEffect(() => {
     setIsClient(true);
@@ -83,7 +82,15 @@ export default function SettingsPage() {
             </CardDescription>
           </CardHeader>
           <CardContent>
-            {user ? (
+            {authBypassed ? (
+              <div className="flex items-center gap-3 text-muted-foreground bg-muted/50 p-4 rounded-lg">
+                  <ShieldOff className="h-6 w-6"/>
+                  <div>
+                      <p className="font-semibold text-foreground">Demo Mode</p>
+                      <p className="text-sm">Authentication is disabled. Add Firebase keys to enable user accounts.</p>
+                  </div>
+              </div>
+            ) : user ? (
                 <div className="flex items-center gap-4">
                     <div className="w-12 h-12 rounded-full bg-muted flex items-center justify-center text-muted-foreground font-bold text-xl">
                         {user.email?.charAt(0).toUpperCase()}

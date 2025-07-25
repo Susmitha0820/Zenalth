@@ -1,5 +1,4 @@
 
-
 "use client";
 
 import { useState, useRef, useEffect } from "react";
@@ -50,7 +49,7 @@ export default function Home() {
   const [isClient, setIsClient] = useState(false);
   const [mood, setMood] = useState<Mood>("default");
   const [language, setLanguage] = useState("English");
-  const { user, loading } = useAuth();
+  const { user, loading, authBypassed } = useAuth();
   const router = useRouter();
 
   useEffect(() => {
@@ -86,12 +85,6 @@ export default function Home() {
     }
   }, [messages]);
 
-  useEffect(() => {
-    if (!loading && !user) {
-      router.push('/login');
-    }
-  }, [user, loading, router]);
-  
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (!input.trim() || isLoading) return;
@@ -146,7 +139,7 @@ export default function Home() {
     }
   };
   
-  if (loading || !user) {
+  if (loading) {
     return (
         <div className="flex items-center justify-center h-screen">
             <div className="w-16 h-16 border-4 border-dashed rounded-full animate-spin border-primary"></div>

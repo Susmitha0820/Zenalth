@@ -14,6 +14,7 @@ import {
   Sparkles,
   LogOut,
   LogIn,
+  ShieldOff,
 } from "lucide-react";
 import {
   Sheet,
@@ -27,6 +28,12 @@ import { useAuth } from "@/hooks/use-auth";
 import { auth } from "@/lib/firebase";
 import { signOut } from "firebase/auth";
 import { useToast } from "@/hooks/use-toast";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip"
 
 const navItems = [
   { href: "/", label: "Chat", icon: MessageSquare },
@@ -38,7 +45,7 @@ const navItems = [
 
 export function Header() {
   const pathname = usePathname();
-  const { user } = useAuth();
+  const { user, authBypassed } = useAuth();
   const router = useRouter();
   const { toast } = useToast();
 
@@ -83,14 +90,28 @@ export function Header() {
           <h2 className="text-lg font-semibold tracking-tight">GenZ Friend</h2>
         </Link>
 
-        {user && (
+        {(user || authBypassed) && (
           <nav className="hidden md:flex items-center gap-2">
             {renderNavLinks()}
           </nav>
         )}
 
         <div className="flex items-center gap-2">
-           {user ? (
+           {authBypassed ? (
+             <TooltipProvider>
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <div className="hidden md:flex items-center gap-1.5 text-sm text-muted-foreground font-semibold px-3">
+                      <ShieldOff className="h-4 w-4"/>
+                      <span>Demo Mode</span>
+                    </div>
+                  </TooltipTrigger>
+                  <TooltipContent>
+                    <p>Authentication is disabled. Set Firebase keys to enable user accounts.</p>
+                  </TooltipContent>
+                </Tooltip>
+              </TooltipProvider>
+           ) : user ? (
             <>
               <Link href="/settings" className={cn(
                 "hidden md:flex items-center justify-center rounded-md h-9 w-9 transition-colors",
@@ -133,7 +154,7 @@ export function Header() {
                      </div>
                      <h2 className="text-lg font-semibold tracking-tight">GenZ Friend</h2>
                   </Link>
-                  {user && (
+                  {(user || authBypassed) && (
                     <nav className="flex flex-col gap-2">
                       {renderNavLinks(true)}
                     </nav>
@@ -141,7 +162,15 @@ export function Header() {
                 </div>
 
                 <div className="mt-auto p-4 border-t">
-                  {user ? (
+                  {authBypassed ? (
+                     <div className="flex items-center gap-2 text-muted-foreground p-3 rounded-md bg-muted text-sm">
+                        <ShieldOff className="h-5 w-5"/>
+                        <div>
+                          <p className="font-semibold">Demo Mode</p>
+                          <p className="text-xs">Authentication is disabled.</p>
+                        </div>
+                     </div>
+                  ) : user ? (
                     <div className="flex flex-col gap-2">
                       <SheetClose asChild>
                         <Link href="/settings" className={cn(
