@@ -4,7 +4,7 @@
 import { useState, useEffect, useMemo, useCallback } from "react";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Calendar, Smile, Meh, Frown, Laugh, Annoyed, Flame, Award, Trophy, Sparkles, Loader, Wand2 } from "lucide-react";
+import { Calendar, Smile, Meh, Frown, Laugh, Annoyed, Flame, Award, Trophy, Sparkles, Loader, Wand2, Star, Gem } from "lucide-react";
 import {
   ChartContainer,
   ChartTooltip,
@@ -28,9 +28,9 @@ const moodMeta: Record<Mood, { icon: React.ElementType, color: string, label: st
 };
 
 const badgeMeta = {
-  3: { icon: Award, label: "3-Day Streak", color: "text-amber-500" },
-  7: { icon: Trophy, label: "7-Day Streak", color: "text-slate-400" },
-  14: { icon: Sparkles, label: "14-Day Streak", color: "text-violet-500" },
+  1: { icon: Star, label: "Daily User", color: "text-yellow-500" },
+  7: { icon: Trophy, label: "Weekly Streak", color: "text-slate-400" },
+  30: { icon: Gem, label: "Monthly Streak", color: "text-violet-500" },
 };
 
 type BadgeTier = keyof typeof badgeMeta;
