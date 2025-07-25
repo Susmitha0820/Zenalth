@@ -15,6 +15,7 @@ import { format, subDays, startOfDay, isSameDay, differenceInCalendarDays, subHo
 import { Alert, AlertTitle, AlertDescription } from "@/components/ui/alert";
 import type { ChartConfig } from "@/components/ui/chart";
 import { moodQuote } from "@/ai/flows/mood-quote";
+import { cn } from "@/lib/utils";
 
 type Mood = "joyful" | "happy" | "neutral" | "sad" | "annoyed";
 
@@ -183,18 +184,24 @@ export default function MoodTrackerPage() {
               <CardContent className="flex-grow flex flex-col justify-center gap-4">
                   <div className="space-y-4">
                       <div className="grid grid-cols-3 sm:grid-cols-5 gap-2 place-items-center">
-                          {Object.entries(moodMeta).map(([moodKey, { icon: Icon, label }]) => (
+                          {Object.entries(moodMeta).map(([moodKey, { icon: Icon, label, color }]) => (
                               <div key={moodKey} className="flex flex-col items-center gap-2">
-                                   <Button
-                                      variant="outline"
-                                      size="icon"
-                                      className="w-16 h-16 rounded-full"
+                                   <button
+                                      className={cn(
+                                        "w-16 h-16 rounded-full flex items-center justify-center transition-all duration-200",
+                                        "bg-background shadow-[4px_4px_8px_#bcbcbc,-4px_-4px_8px_#ffffff]",
+                                        "dark:bg-card dark:shadow-[4px_4px_8px_#1a1a1a,-4px_-4px_8px_#2a2a2a]",
+                                        "active:shadow-[inset_4px_4px_8px_#bcbcbc,inset_-4px_-4px_8px_#ffffff]",
+                                        "dark:active:shadow-[inset_4px_4px_8px_#1a1a1a,inset_-4px_-4px_8px_#2a2a2a]",
+                                        "disabled:opacity-50 disabled:cursor-not-allowed"
+                                      )}
+                                      style={{ color }}
                                       onClick={() => handleMoodSelect(moodKey as Mood)}
                                       disabled={isLoading}
                                       aria-label={`Log mood as ${label}`}
                                    >
                                       <Icon className="w-8 h-8"/>
-                                   </Button>
+                                   </button>
                                    <span className="text-sm text-muted-foreground">{label}</span>
                               </div>
                           ))}
