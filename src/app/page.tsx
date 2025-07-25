@@ -8,11 +8,12 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { empatheticResponse } from "@/ai/flows/empathetic-response";
 import { assessRisk } from "@/ai/flows/risk-assessment";
 import { detectEmotion } from "@/ai/flows/emotion-detection";
-import { Send, AlertTriangle, ShieldCheck, LifeBuoy, ArrowRight, MessageSquare } from "lucide-react";
+import { Send, AlertTriangle, ShieldCheck, LifeBuoy, ArrowRight, MessageSquare, Tag } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import { Alert, AlertTitle, AlertDescription } from "@/components/ui/alert";
 import type { Resource } from "@/lib/resources";
+import { Badge } from "@/components/ui/badge";
 
 type Mood = "joyful" | "happy" | "neutral" | "sad" | "annoyed" | "default";
 
@@ -22,6 +23,7 @@ type ChatMessage = {
   riskSummary?: string;
   suggestedAction?: string;
   recommendedResource?: Resource;
+  highlightedTheme?: string;
 };
 
 // Mapping from detected emotion to mood for theming
@@ -102,6 +104,7 @@ export default function Home() {
             role: "assistant",
             content: response.response,
             recommendedResource: response.recommendedResource,
+            highlightedTheme: response.highlightedTheme,
         };
         setMessages((prev) => [...prev, assistantMessage]);
 
@@ -167,6 +170,12 @@ export default function Home() {
                 {message.role === 'assistant' && (
                   <div className="flex items-start gap-3 justify-start">
                     <div className="bg-muted p-3 rounded-lg max-w-sm space-y-3">
+                       {message.highlightedTheme && (
+                            <Badge variant="secondary" className="capitalize">
+                                <Tag className="mr-1.5 h-3 w-3"/>
+                                {message.highlightedTheme}
+                            </Badge>
+                        )}
                       <p>{message.content}</p>
                       {message.recommendedResource && (
                         <Card className="bg-background/50">
@@ -249,3 +258,5 @@ export default function Home() {
     </div>
   );
 }
+
+    
