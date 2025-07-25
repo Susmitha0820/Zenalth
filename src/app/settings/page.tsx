@@ -85,7 +85,7 @@ export default function SettingsPage() {
               onValueChange={handleThemeChange}
               className="grid grid-cols-2 md:grid-cols-3 gap-4"
             >
-              {['default', 'mint', 'lavender'].map((themeName) => (
+              {['default', 'mint', 'lavender', 'peach', 'sunset'].map((themeName) => (
                 <Label
                   key={themeName}
                   htmlFor={themeName}

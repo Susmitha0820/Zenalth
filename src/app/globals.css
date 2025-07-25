@@ -29,7 +29,7 @@
     --chart-3: 120 40% 90%;
     --chart-4: 190 60% 90%;
     --chart-5: 280 70% 92%;
-    --radius: 0.5rem;
+    --radius: 0.8rem;
     --header-height: 4rem;
   }
   .dark,
@@ -132,6 +132,77 @@
     --accent: 280 30% 20%;
     --accent-foreground: 280 10% 90%;
     --ring: 250 40% 35%;
+  }
+   [data-theme='peach'] {
+    --background: 30 100% 98%;
+    --foreground: 30 15% 30%;
+    --card: 30 50% 100%;
+    --card-foreground: 30 15% 30%;
+    --popover: 30 50% 100%;
+    --popover-foreground: 30 15% 30%;
+    --primary: 35 100% 85%;
+    --primary-foreground: 35 30% 25%;
+    --secondary: 30 30% 95%;
+    --secondary-foreground: 30 15% 10%;
+    --muted: 30 30% 95%;
+    --muted-foreground: 30 10% 45%;
+    --accent: 25 100% 90%;
+    --accent-foreground: 25 30% 25%;
+    --ring: 35 100% 75%;
+  }
+
+  [data-theme='peach-dark'] {
+    --background: 30 10% 10%;
+    --foreground: 30 10% 80%;
+    --card: 30 10% 8%;
+    --card-foreground: 30 10% 80%;
+    --popover: 30 10% 8%;
+    --popover-foreground: 30 10% 80%;
+    --primary: 35 40% 25%;
+    --primary-foreground: 35 10% 90%;
+    --secondary: 30 10% 15%;
+    --secondary-foreground: 30 10% 95%;
+    --muted: 30 10% 15%;
+    --muted-foreground: 30 10% 65%;
+    --accent: 25 30% 20%;
+    --accent-foreground: 25 10% 90%;
+    --ring: 35 40% 35%;
+  }
+
+  [data-theme='sunset'] {
+    --background: 340 100% 99%;
+    --foreground: 340 15% 30%;
+    --card: 340 30% 100%;
+    --card-foreground: 340 15% 30%;
+    --popover: 340 30% 100%;
+    --popover-foreground: 340 15% 30%;
+    --primary: 330 90% 88%;
+    --primary-foreground: 330 30% 25%;
+    --secondary: 340 40% 95%;
+    --secondary-foreground: 340 15% 10%;
+    --muted: 340 40% 95%;
+    --muted-foreground: 340 10% 45%;
+    --accent: 20 100% 90%;
+    --accent-foreground: 20 30% 25%;
+    --ring: 330 90% 80%;
+  }
+  
+  [data-theme='sunset-dark'] {
+    --background: 340 10% 10%;
+    --foreground: 340 10% 80%;
+    --card: 340 10% 8%;
+    --card-foreground: 340 10% 80%;
+    --popover: 340 10% 8%;
+    --popover-foreground: 340 10% 80%;
+    --primary: 330 50% 25%;
+    --primary-foreground: 330 10% 90%;
+    --secondary: 340 10% 15%;
+    --secondary-foreground: 340 10% 95%;
+    --muted: 340 10% 15%;
+    --muted-foreground: 340 10% 65%;
+    --accent: 20 40% 20%;
+    --accent-foreground: 20 10% 90%;
+    --ring: 330 50% 35%;
   }
 }
 
